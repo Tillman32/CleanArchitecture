@@ -1,0 +1,88 @@
+﻿@page
+@model CleanArchitecture.ClientWeb.Pages.Articles.CreateModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>New Article</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="text-danger" asp-validation-summary="All"></div>
+                    <div class="form-group">
+                        <label class="col-form-label-lg" asp-for="Title"></label>
+                        <input class="input-group" asp-for="Title" />
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label-lg" asp-for="ArticleContent"></label>
+                        <textarea id="editor" class="input-group" asp-for="ArticleContent" rows="10"></textarea>
+                    </div>
+                    <div class="form-group">
+
+                    </div>
+                    <div class="form-group">
+                        <div class="float-right">
+                            <button type="submit" class="btn btn-success">Create</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mt-5">
+                    <div class="card">
+                        <div class="card-header">
+                            Metadata
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label asp-for="CategoryId">Category</label>
+                                @Html.DropDownListFor(model => model.CategoryId, Model.ArticleCategoryList, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            Article Image
+                        </div>
+                        <div class="card-body">
+                            <img id="imagePreview" src="http://via.placeholder.com/250x150" />
+                            <input id="imageUpload" type="file" asp-for="ImageUpload" accept="image/*" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    #imagePreview {
+        height: 150px;
+        width: auto;
+        max-width: 250px;
+        padding: 5px;
+    }
+</style>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#editor').summernote({ height: 300 });
+
+            $('#imageUpload').change(function (event) {
+                var input = this;
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#imagePreview').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            })
+        })
+    </script>
+}

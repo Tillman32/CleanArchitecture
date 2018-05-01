@@ -1,0 +1,41 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Articles";
+}
+
+<div class="row">
+    <div class="col-md-10">
+        @if (Model.Articles.Count() > 0)
+        {
+            @foreach (var article in Model.Articles)
+            {
+                <div class="col-md-10 offset-md-2">
+                    <div class="card mb-4">
+                        @if (article.ImageFileName != null)
+                        {
+                            <img class="card-img-top" src="~/uploads/@article.ImageFileName" alt="Card image cap">
+                        }
+                        <div class="card-body">
+                            <h2 class="card-title">@article.Title</h2>
+                            <p class="card-text">@Html.Raw(article.ContentPreview)</p>
+                            <br />
+                            <a href="./Article/@article.Id" class="btn btn-primary">Read More &rarr;</a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            Posted on @article.DateCreated.ToLongDateString() by
+                            <a href="#">@article.CreatedBy</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <h3>No Articles are Published</h3>
+            <p><a asp-page="./Article/Create">Create a new article</a> to get started.</p>
+        }
+    </div>
+</div>
+
+

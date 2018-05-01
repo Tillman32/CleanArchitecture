@@ -1,0 +1,20 @@
+﻿@page "{id:int}"
+@model CleanArchitecture.ClientWeb.Pages.Articles.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+
+    <div class="col-md-10">
+        <div class="pb-4">
+            <img class="img-fluid" src="~/uploads/@Model.Article.ImageFileName" />
+        </div>
+        <h3>@Model.Article.Title</h3>
+        <p class="text-muted">Post on @Model.Article.DateCreated.ToLongDateString() | 
+        By @Model.Article.CreatedBy</p>
+        <p>@(Html.Raw(Model.Article.Content))</p>
+
+    </div>
+</div>
+

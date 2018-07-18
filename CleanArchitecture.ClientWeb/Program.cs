@@ -16,8 +16,24 @@ namespace CleanArchitecture.ClientWeb
     {
         public static void Main(string[] args)
         {
-            var host = BuildWebHost(args);
+            // Setup logging first to catch all errors
+            var logger =
+                NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
+            IWebHost host = null;
+
+            try
+            {
+                logger.Debug("Starting up...");
+                host = BuildWebHost(args);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Program could not start due to error.");
+                throw;
+            }
+
+            // Seed the Database
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -28,8 +44,7 @@ namespace CleanArchitecture.ClientWeb
                 }
                 catch (Exception ex)
                 {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred while seeding the database.");
+                    logger.Error(ex, "An error occurred while seeding the database.");
                 }
             }
 

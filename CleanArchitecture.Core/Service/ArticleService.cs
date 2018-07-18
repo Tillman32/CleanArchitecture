@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using AutoMapper;
+using CleanArchitecture.Core.Logging;
 
 namespace CleanArchitecture.Core.Service
 {
@@ -18,44 +19,83 @@ namespace CleanArchitecture.Core.Service
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IRepository<ArticleEntity> _repo;
         private readonly IMapper _mapper;
+        private readonly ILogger<ArticleService> _logger;
 
         public ArticleService(
             IHostingEnvironment hostingEnvironment,
             IRepository<ArticleEntity> repo,
-            IMapper mapper)
+            IMapper mapper,
+            ILogger<ArticleService> logger)
         {
             _hostingEnvironment = hostingEnvironment;
             _repo = repo;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<ArticleDTO>> ListAllArticlesAsync()
         {
-            var entities = 
-                await _repo.ListAllAsync();
+            try
+            {
+                var articles =
+                    await _repo.ListAllAsync();
 
-            return entities
-                .Select(e => _mapper.Map<ArticleEntity, ArticleDTO>(e));
+                _logger.LogInfo("Retrieved all Article Entities from ArticleService.");
+
+                var articlesDTO =
+                    articles.Select(e => _mapper.Map<ArticleEntity, ArticleDTO>(e));
+
+                return articlesDTO;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unable to ListAllArticles from ArticleService.");
+                return null;
+            }
         }
 
         public async Task<ArticleDTO> GetArticleAsync(int id)
         {
-            var article =
-                await _repo.GetAsync(id);
+            try
+            {
+                var article =
+                    await _repo.GetAsync(id);
 
-            return _mapper.Map<ArticleEntity, ArticleDTO>(article);
+                var articleDTO = 
+                    _mapper.Map<ArticleEntity, ArticleDTO>(article);
+
+                _logger.LogInfo($"Retrieved single Article from ArticleService. ID: {article.Id}");
+
+                return articleDTO;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Unable to retrieve Article from ArticleService. ID: {id}");
+
+                return null;
+            }
         }
 
-        public async Task CreateArticleAsync(ArticleDTO article)
+        public async Task CreateArticleAsync(ArticleDTO articleDTO)
         {
-            var entity =
-                _mapper.Map<ArticleDTO, ArticleEntity>(article);
 
-            entity.ContentPreview = $"{entity.Content.Truncate(500)}...";
-            entity.DateCreated = DateTime.Now.Date;
-            entity.CreatedBy = "BrandonTillman.com";
+            try
+            {
+                var articleEntity = 
+                    _mapper.Map<ArticleDTO, ArticleEntity>(articleDTO);
 
-            await _repo.AddAsync(entity);
+                articleEntity.ContentPreview = articleEntity.Content.Length > 500 ? $"{articleEntity.Content.Truncate(500)}..." : $"{articleEntity.Content}";
+                articleEntity.DateCreated = DateTime.Now.Date;
+                articleEntity.CreatedBy = "BrandonTillman.com";
+
+                await _repo.AddAsync(articleEntity);
+
+                _logger.LogInfo($"Created new Article in ArticleService. ID: {articleEntity.Id}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unable to create new Article in ArticleService.");
+            }
         }
 
         public async Task<string> UploadArticleImageAsync(IFormFile imageFile)
@@ -67,10 +107,12 @@ namespace CleanArchitecture.Core.Service
             try
             {
                 await imageFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
+
+                _logger.LogInfo($"Successfully uploaded new ArticleImage in ArticleService");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO: Log Exception
+                _logger.LogError(ex, "Unable to upload new ArticleImage in ArticleService");
             }
 
             return fileName;

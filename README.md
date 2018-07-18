@@ -26,4 +26,4 @@ The code will be easier to modify in the future, because of a few reasons. Separ
 
 #### Maintainable
 
-The code will inheritenly be more maintainable by following Clean Architecture patterns. Other developers will see the benefit of the clean separation, and follow suit.
+The code will inherently be more maintainable by following Clean Architecture patterns. Other developers will see the benefit of the clean separation, and follow suit.

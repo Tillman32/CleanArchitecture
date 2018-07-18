@@ -12,6 +12,8 @@ using CleanArchitecture.Core.Data;
 using CleanArchitecture.Core.Entity;
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Core.Service;
+using CleanArchitecture.Core.Logging;
+using CleanArchitecture.Infrastructure.Logging;
 
 namespace CleanArchitecture.ClientWeb
 {
@@ -40,6 +42,9 @@ namespace CleanArchitecture.ClientWeb
 
             // Mappers
             services.AddAutoMapper();
+
+            // Logging
+            services.AddScoped(typeof(ILogger<>), typeof(NLogLogger<>));
 
             services.AddMvc();
         }

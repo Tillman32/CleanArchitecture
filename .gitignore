@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /CleanArchitecture.ClientWeb/Properties
+/CleanArchitecture.ClientWeb/wwwroot/uploads

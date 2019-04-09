@@ -10,7 +10,7 @@
         {
             @foreach (var article in Model.Articles)
             {
-                <div class="col-md-10 offset-md-2">
+                <div class="col-md-12">
                     <div class="card mb-4">
                         @if (article.ImageFileName != null)
                         {
@@ -24,7 +24,7 @@
                         </div>
                         <div class="card-footer text-muted">
                             Posted on @article.DateCreated.ToLongDateString() by
-                            <a href="#">@article.CreatedBy</a>
+                            <a href="http://brandontillman.com" target="_blank">@article.CreatedBy</a>
                         </div>
                     </div>
                 </div>

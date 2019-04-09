@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CleanArchitecture.Core.Entity
+﻿namespace CleanArchitecture.Core.Data.Entity
 {
     public class ArticleCategoryEntity : EntityBase
     {

@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
-using CleanArchitecture.Core.DTO;
-using CleanArchitecture.Core.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using CleanArchitecture.Core.Data.DTO;
+using CleanArchitecture.Core.Data.Entity;
 
-namespace CleanArchitecture.ClientWeb
+namespace CleanArchitecture.Core.Mapping
 {
     public class MappingProfile : Profile
     {

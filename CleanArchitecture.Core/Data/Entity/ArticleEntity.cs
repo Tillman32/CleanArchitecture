@@ -1,6 +1,6 @@
-﻿using CleanArchitecture.Core.DTO;
+﻿using CleanArchitecture.Core.Data.DTO;
 
-namespace CleanArchitecture.Core.Entity
+namespace CleanArchitecture.Core.Data.Entity
 {
     public class ArticleEntity : EntityBase
     {

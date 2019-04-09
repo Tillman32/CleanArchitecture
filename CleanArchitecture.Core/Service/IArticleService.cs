@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using CleanArchitecture.Core.DTO;
+using CleanArchitecture.Core.Data.DTO;
 using Microsoft.AspNetCore.Http;
 
 namespace CleanArchitecture.Core.Service

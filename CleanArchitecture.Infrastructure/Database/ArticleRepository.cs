@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using CleanArchitecture.Core.Data;
-using CleanArchitecture.Core.Entity;
+using CleanArchitecture.Core.Data.Entity;
 
 
 namespace CleanArchitecture.Infrastructure.Database

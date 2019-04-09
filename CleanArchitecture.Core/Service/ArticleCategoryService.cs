@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchitecture.Core.Data;
-using CleanArchitecture.Core.DTO;
-using CleanArchitecture.Core.Entity;
+using CleanArchitecture.Core.Data.DTO;
+using CleanArchitecture.Core.Data.Entity;
 
 namespace CleanArchitecture.Core.Service
 {

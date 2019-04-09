@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Core.DTO;
+﻿using CleanArchitecture.Core.Data.DTO;
 using CleanArchitecture.Core.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,13 +17,10 @@ namespace CleanArchitecture.ClientWeb.Pages.Articles
 
         [BindProperty]
         public IFormFile ImageUpload { get; set; }
+
         [BindProperty]
-        public string Title { get; set; }
-        [BindProperty]
-        public string ArticleContent { get; set; }
-        [BindProperty]
-        public int CategoryId { get; set; }
-        [BindProperty]
+        public ArticleDTO Article { get; set; }
+
         public List<SelectListItem> ArticleCategoryList { get; set; }
 
         public CreateModel(
@@ -36,48 +33,47 @@ namespace CleanArchitecture.ClientWeb.Pages.Articles
 
         public async Task OnGetAsync()
         {
-            ArticleCategoryList =
-                await BuildCategoryList();
+            await Init();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            await Init();
+
             if (!ModelState.IsValid)
                 return Page();
 
-            var article =
-                new ArticleDTO();
+            Article.Category = 
+                await _articleCategoryService.GetArticleCategoryAsync(Article.CategoryId);
 
-            article.Title = Title;
-            article.Content = ArticleContent;
-            article.CategoryId = CategoryId;
-            article.Category = 
-                await _articleCategoryService.GetArticleCategoryAsync(CategoryId);
-
-            if(ImageUpload != null)
+            if (ImageUpload != null)
             {
-                article.ImageFileName = 
+                Article.ImageFileName =
                     await _articleService.UploadArticleImageAsync(ImageUpload);
             }
 
-            await _articleService.CreateArticleAsync(article);
+            await _articleService.CreateArticleAsync(Article);
 
             return RedirectToPage("/Index");
         }
 
+        private async Task Init()
+        {
+            ArticleCategoryList =
+                await BuildCategoryList();
+        }
+
         private async Task<List<SelectListItem>> BuildCategoryList()
         {
-            var list = new List<SelectListItem>();
             var categories = await _articleCategoryService.ListAllArticleCategoriesAsync();
 
-            foreach (var category in categories)
-            {
-                list.Add(new SelectListItem()
+            var list = categories
+                .Select(c => new SelectListItem
                 {
-                    Text = category.Title,
-                    Value = category.Id.ToString()
-                });
-            }
+                    Text = c.Title,
+                    Value = c.Id.ToString()
+                })
+                .ToList();
 
             return list;
         }

@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Core.DTO
+﻿namespace CleanArchitecture.Core.Data.DTO
 {
     public class ArticleCategoryDTO
     {

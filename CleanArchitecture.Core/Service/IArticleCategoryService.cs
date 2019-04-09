@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Core.DTO;
+﻿using CleanArchitecture.Core.Data.DTO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

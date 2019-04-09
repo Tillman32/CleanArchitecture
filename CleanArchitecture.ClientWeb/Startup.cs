@@ -9,11 +9,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using CleanArchitecture.Core.Data;
-using CleanArchitecture.Core.Entity;
+using CleanArchitecture.Core.Data.Entity;
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Core.Service;
 using CleanArchitecture.Core.Logging;
 using CleanArchitecture.Infrastructure.Logging;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.ClientWeb
 {
@@ -29,8 +30,9 @@ namespace CleanArchitecture.ClientWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options => 
-                options.UseInMemoryDatabase(databaseName: "ApplicationDB"));
+            // Database
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseInMemoryDatabase(databaseName: "CleanDb"));
 
             // Services
             services.AddScoped<IArticleService, ArticleService>();
@@ -46,7 +48,10 @@ namespace CleanArchitecture.ClientWeb
             // Logging
             services.AddScoped(typeof(ILogger<>), typeof(NLogLogger<>));
 
-            services.AddMvc();
+            // Framework
+            services
+                .AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

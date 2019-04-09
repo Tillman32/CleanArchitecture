@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using CleanArchitecture.Core.Entity;
+using CleanArchitecture.Core.Data.Entity;
 
 namespace CleanArchitecture.Infrastructure.Database
 {

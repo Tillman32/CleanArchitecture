@@ -1,20 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using CleanArchitecture.Core.Data;
 using CleanArchitecture.Core.Data.Entity;
-using CleanArchitecture.Infrastructure.Database;
-using CleanArchitecture.Core.Service;
 using CleanArchitecture.Core.Logging;
+using CleanArchitecture.Core.Service;
+using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Logging;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.ClientWeb
 {
@@ -38,7 +34,7 @@ namespace CleanArchitecture.ClientWeb
             services.AddScoped<IArticleService, ArticleService>();
             services.AddScoped<IArticleCategoryService, ArticleCategoryService>();
 
-            // Repositories 
+            // Repositories
             services.AddScoped<IRepository<ArticleEntity>, ArticleRepository>();
             services.AddScoped<IRepository<ArticleCategoryEntity>, ArticleCategoryRepository>();
 

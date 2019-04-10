@@ -263,4 +263,3 @@ __pycache__/
 #Custom
 src/CleanArchitecture.ClientWeb/Properties
 src/CleanArchitecture.ClientWeb/wwwroot/uploads
-src/CleanArchitecture.ClientWeb/wwwroot/lib

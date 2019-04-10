@@ -61,4 +61,4 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
-src\CleanArchitecture.ClientWeb/wwwroot/lib/* linguist-vendored
+src/CleanArchitecture.ClientWeb/wwwroot/lib/* linguist-vendored

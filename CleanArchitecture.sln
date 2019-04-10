@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2002
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Core", "CleanArchitecture.Core\CleanArchitecture.Core.csproj", "{985C06E9-8790-44AC-92FD-829D6AAC3704}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Core", "src\CleanArchitecture.Core\CleanArchitecture.Core.csproj", "{985C06E9-8790-44AC-92FD-829D6AAC3704}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Infrastructure", "CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj", "{E824997E-E0B8-4B72-96A5-DAEED2B348E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Infrastructure", "src\CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj", "{E824997E-E0B8-4B72-96A5-DAEED2B348E7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.ClientWeb", "CleanArchitecture.ClientWeb\CleanArchitecture.ClientWeb.csproj", "{608F3CAC-42F3-43AF-A852-EE0B595B9AF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.ClientWeb", "src\CleanArchitecture.ClientWeb\CleanArchitecture.ClientWeb.csproj", "{608F3CAC-42F3-43AF-A852-EE0B595B9AF3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5D33665C-8B27-496F-BDCC-7F74B00F340C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +32,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{985C06E9-8790-44AC-92FD-829D6AAC3704} = {5D33665C-8B27-496F-BDCC-7F74B00F340C}
+		{E824997E-E0B8-4B72-96A5-DAEED2B348E7} = {5D33665C-8B27-496F-BDCC-7F74B00F340C}
+		{608F3CAC-42F3-43AF-A852-EE0B595B9AF3} = {5D33665C-8B27-496F-BDCC-7F74B00F340C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1B2DD532-0E0D-4D10-9093-9661089154BF}

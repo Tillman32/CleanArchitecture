@@ -1,5 +1,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+![](https://www.brandontillman.com/wp-content/uploads/2019/04/CleanArchitectureScreenShot-min.png "BrandonTillman.com CleanArchitecture")
+
 # The motivation behind it all
 
 What is the point of all this? Well, besides showcasing Bob Ross... I thought it would be clever to have a "real world" application to reference when talking architecture. I want something to set a standard, something to clone, something to utilize in all my next .Net Core projects. Like all software (and wine), this will improve with time.

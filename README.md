@@ -6,6 +6,8 @@
 
 What is the point of all this? Well, besides showcasing Bob Ross... I thought it would be clever to have a "real world" application to reference when talking architecture. I want something to set a standard, something to clone, something to utilize in all my next .Net Core projects. Like all software (and wine), this will improve with time.
 
+An example of the application running on AWS (Ubuntu) is hosted here: [https://CleanArchitecture.BrandonTillman.com](https://cleanarchitecture.brandontillman.com/).
+
 # Key Points:
 
 ### :trident: N-Tier Architecture

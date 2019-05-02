@@ -17,13 +17,13 @@ namespace CleanArchitecture.Core.Service
     public class ArticleService : IArticleService
     {
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly IRepository<ArticleEntity> _repo;
+        private readonly IGenericRepository<ArticleEntity> _repo;
         private readonly IMapper _mapper;
         private readonly ILogger<ArticleService> _logger;
 
         public ArticleService(
             IHostingEnvironment hostingEnvironment,
-            IRepository<ArticleEntity> repo,
+            IGenericRepository<ArticleEntity> repo,
             IMapper mapper,
             ILogger<ArticleService> logger)
         {
@@ -33,12 +33,13 @@ namespace CleanArchitecture.Core.Service
             _logger = logger;
         }
 
+
         public async Task<IEnumerable<ArticleDTO>> ListAllArticlesAsync()
         {
             try
             {
                 var articles =
-                    await _repo.ListAllAsync();
+                    await _repo.GetAll();
 
                 _logger.LogInfo("Retrieved all Article Entities from ArticleService.");
 
@@ -59,7 +60,7 @@ namespace CleanArchitecture.Core.Service
             try
             {
                 var article =
-                    await _repo.GetAsync(id);
+                    await _repo.GetById(id);
 
                 var articleDTO = 
                     _mapper.Map<ArticleEntity, ArticleDTO>(article);
@@ -88,7 +89,7 @@ namespace CleanArchitecture.Core.Service
                 articleEntity.DateCreated = DateTime.Now.Date;
                 articleEntity.CreatedBy = "BrandonTillman.com";
 
-                await _repo.AddAsync(articleEntity);
+                await _repo.Create(articleEntity);
 
                 _logger.LogInfo($"Created new Article in ArticleService. ID: {articleEntity.Id}");
             }

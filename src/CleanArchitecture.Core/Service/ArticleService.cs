@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using AutoMapper;
 using CleanArchitecture.Core.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Core.Service
 {
@@ -39,7 +40,7 @@ namespace CleanArchitecture.Core.Service
             try
             {
                 var articles =
-                    await _repo.GetAll();
+                    await _repo.GetAll().Take(10).ToListAsync();
 
                 _logger.LogInfo("Retrieved all Article Entities from ArticleService.");
 

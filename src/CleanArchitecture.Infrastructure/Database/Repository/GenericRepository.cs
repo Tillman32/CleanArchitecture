@@ -12,18 +12,16 @@ namespace CleanArchitecture.Infrastructure.Database.Repository
         where TEntity : class, IEntity
     {
         private readonly ApplicationDbContext _dbContext;
+
         public GenericRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll()
+        public IQueryable<TEntity> GetAll()
         {
-            var query = _dbContext.Set<TEntity>()
-                    .AsQueryable()
-                    .AsNoTracking();
-
-            return await query.ToListAsync();
+            return _dbContext.Set<TEntity>()
+                .AsNoTracking();
         }
 
         public async Task<TEntity> GetById(int id)

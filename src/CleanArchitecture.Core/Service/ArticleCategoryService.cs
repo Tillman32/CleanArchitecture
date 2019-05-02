@@ -5,6 +5,7 @@ using AutoMapper;
 using CleanArchitecture.Core.Data;
 using CleanArchitecture.Core.Data.DTO;
 using CleanArchitecture.Core.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Core.Service
 {
@@ -25,7 +26,7 @@ namespace CleanArchitecture.Core.Service
         public async Task<IEnumerable<ArticleCategoryDTO>> ListAllArticleCategoriesAsync()
         {
             var entities =
-                await _repo.GetAll();
+                await _repo.GetAll().ToListAsync();
 
             return entities
                 .Select(e => _mapper.Map<ArticleCategoryEntity, ArticleCategoryDTO>(e));

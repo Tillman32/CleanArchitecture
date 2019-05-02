@@ -4,6 +4,7 @@ using CleanArchitecture.Core.Data.Entity;
 using CleanArchitecture.Core.Logging;
 using CleanArchitecture.Core.Service;
 using CleanArchitecture.Infrastructure.Database;
+using CleanArchitecture.Infrastructure.Database.Repository;
 using CleanArchitecture.Infrastructure.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,13 +31,13 @@ namespace CleanArchitecture.ClientWeb
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseInMemoryDatabase(databaseName: "CleanDb"));
 
+            // Repositories
+            services.AddScoped<IGenericRepository<ArticleEntity>, GenericRepository<ArticleEntity>>();
+            services.AddScoped<IGenericRepository<ArticleCategoryEntity>, GenericRepository<ArticleCategoryEntity>>();
+
             // Services
             services.AddScoped<IArticleService, ArticleService>();
             services.AddScoped<IArticleCategoryService, ArticleCategoryService>();
-
-            // Repositories
-            services.AddScoped<IRepository<ArticleEntity>, ArticleRepository>();
-            services.AddScoped<IRepository<ArticleCategoryEntity>, ArticleCategoryRepository>();
 
             // Mappers
             services.AddAutoMapper();

@@ -11,11 +11,11 @@ namespace CleanArchitecture.Core.Service
     public class ArticleCategoryService : IArticleCategoryService
     {
 
-        private readonly IRepository<ArticleCategoryEntity> _repo;
+        private readonly IGenericRepository<ArticleCategoryEntity> _repo;
         private readonly IMapper _mapper;
 
         public ArticleCategoryService(
-            IRepository<ArticleCategoryEntity> repo,
+            IGenericRepository<ArticleCategoryEntity> repo,
             IMapper mapper)
         {
             _repo = repo;
@@ -25,7 +25,7 @@ namespace CleanArchitecture.Core.Service
         public async Task<IEnumerable<ArticleCategoryDTO>> ListAllArticleCategoriesAsync()
         {
             var entities =
-                await _repo.ListAllAsync();
+                await _repo.GetAll();
 
             return entities
                 .Select(e => _mapper.Map<ArticleCategoryEntity, ArticleCategoryDTO>(e));
@@ -38,13 +38,13 @@ namespace CleanArchitecture.Core.Service
 
             entity.Title = category.Title;
 
-            await _repo.AddAsync(entity);
+            await _repo.Create(entity);
         }
 
         public async Task<ArticleCategoryDTO> GetArticleCategoryAsync(int id)
         {
             var category =
-                await _repo.GetAsync(id);
+                await _repo.GetById(id);
 
             return _mapper.Map<ArticleCategoryEntity, ArticleCategoryDTO>(category);
         }

@@ -1,5 +1,4 @@
 ﻿using System;
-using CleanArchitecture.Core.Data.DTO;
 
 namespace CleanArchitecture.Core.Data.Entity
 {
@@ -13,6 +12,6 @@ namespace CleanArchitecture.Core.Data.Entity
         public string CreatedBy { get; set; }
         public string ImageFileName { get; set; }
 
-        public virtual ArticleCategoryDTO Category { get; set; }
+        public virtual ArticleCategoryEntity Category { get; set; }
     }
 }

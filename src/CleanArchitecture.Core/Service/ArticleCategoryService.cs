@@ -26,7 +26,7 @@ namespace CleanArchitecture.Core.Service
         public async Task<IEnumerable<ArticleCategoryDTO>> ListAllArticleCategoriesAsync()
         {
             var entities =
-                await _repo.GetAll().ToListAsync();
+                await _repo.GetAll();
 
             return entities
                 .Select(e => _mapper.Map<ArticleCategoryEntity, ArticleCategoryDTO>(e));

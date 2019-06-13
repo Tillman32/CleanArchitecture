@@ -6,12 +6,11 @@ using CleanArchitecture.Core.Data;
 using CleanArchitecture.Core.Data.DTO;
 using CleanArchitecture.Core.Data.Entity;
 using CleanArchitecture.Core.Extensions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using AutoMapper;
 using CleanArchitecture.Core.Logging;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace CleanArchitecture.Core.Service
 {
@@ -39,8 +38,8 @@ namespace CleanArchitecture.Core.Service
         {
             try
             {
-                var articles =
-                    await _repo.GetAll().Take(10).ToListAsync();
+                var articles = await
+                    _repo.GetPaginated(1, 10);
 
                 _logger.LogInfo("Retrieved all Article Entities from ArticleService.");
 

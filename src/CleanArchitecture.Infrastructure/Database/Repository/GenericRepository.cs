@@ -18,10 +18,20 @@ namespace CleanArchitecture.Infrastructure.Database.Repository
             _dbContext = dbContext;
         }
 
-        public IQueryable<TEntity> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAll()
         {
-            return _dbContext.Set<TEntity>()
-                .AsNoTracking();
+            return await _dbContext.Set<TEntity>()
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<TEntity>> GetPaginated(int page, int size)
+        {
+            return await _dbContext.Set<TEntity>()
+                .Skip((page - 1) * size)
+                .Take(size)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<TEntity> GetById(int id)

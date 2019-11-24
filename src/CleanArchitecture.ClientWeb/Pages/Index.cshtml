@@ -12,7 +12,7 @@
             {
                 <div class="col-md-12">
                     <div class="card mb-4">
-                        @if (article.ImageFileName != null)
+                        @if (!string.IsNullOrEmpty(article.ImageFileName))
                         {
                             <img class="card-img-top" src="~/uploads/@article.ImageFileName" alt="Card image cap">
                         }

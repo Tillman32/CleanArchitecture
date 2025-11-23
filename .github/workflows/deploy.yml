@@ -24,7 +24,7 @@ on:
 jobs:
   deploy:
     name: Deploy to ${{ github.event.inputs.environment || 'staging' }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     environment:
@@ -37,7 +37,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '5.0.x'
+        dotnet-version: '10.0.x'
 
     - name: Restore dependencies
       run: dotnet restore CleanArchitecture.sln

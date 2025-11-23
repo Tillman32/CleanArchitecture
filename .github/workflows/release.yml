@@ -10,7 +10,7 @@ on:
 jobs:
   publish:
     name: Build and Publish NuGet Packages
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
@@ -22,7 +22,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '5.0.x'
+        dotnet-version: '10.0.x'
 
     - name: Extract version from tag
       id: get_version

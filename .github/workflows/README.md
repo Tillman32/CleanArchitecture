@@ -203,41 +203,15 @@ Add these badges to your README.md:
 
 ## Notes
 
-- All workflows use .NET 5.0 (note: .NET 5.0 is out of support, consider upgrading to .NET 8 or later)
-- Workflows run on `ubuntu-20.04` (required for .NET 5.0 libssl1.1 compatibility)
+- All workflows use .NET 10.0
 - Test results are automatically uploaded and viewable in the Actions tab
 - Packages are versioned based on Git tags
 - Deploy workflow is a template and requires configuration for actual deployment
 
-## Upgrading from .NET 5.0
+## .NET Version
 
-.NET 5.0 reached end of support on May 10, 2022. To upgrade to a supported version:
+This project uses .NET 10.0, which is the latest version with the most recent features and security updates.
 
-### Recommended: Upgrade to .NET 8 (LTS)
-
-1. Update project files (*.csproj):
-   ```xml
-   <!-- Change from -->
-   <TargetFramework>net5.0</TargetFramework>
-   <!-- To -->
-   <TargetFramework>net8.0</TargetFramework>
-   ```
-
-2. Update workflow files (.github/workflows/*.yml):
-   ```yaml
-   # Change from
-   dotnet-version: '5.0.x'
-   runs-on: ubuntu-20.04
-   # To
-   dotnet-version: '8.0.x'
-   runs-on: ubuntu-latest
-   ```
-
-3. Update NuGet packages to versions compatible with .NET 8
-4. Test thoroughly for breaking changes
-
-### Migration Resources:
-- [Migrate from ASP.NET Core 5.0 to 6.0](https://learn.microsoft.com/en-us/aspnet/core/migration/50-to-60)
-- [Migrate from ASP.NET Core 6.0 to 8.0](https://learn.microsoft.com/en-us/aspnet/core/migration/60-to-80)
-- [.NET 8 Breaking Changes](https://learn.microsoft.com/en-us/dotnet/core/compatibility/8.0)
+### .NET Support Information:
 - [.NET Support Policy](https://dotnet.microsoft.com/platform/support/policy/dotnet-core)
+- [What's new in .NET 10](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-10/overview)

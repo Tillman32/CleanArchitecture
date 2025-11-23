@@ -207,3 +207,34 @@ Add these badges to your README.md:
 - Test results are automatically uploaded and viewable in the Actions tab
 - Packages are versioned based on Git tags
 - Deploy workflow is a template and requires configuration for actual deployment
+
+## Upgrading from .NET 5.0
+
+.NET 5.0 reached end of support on May 10, 2022. To upgrade to a supported version:
+
+### Recommended: Upgrade to .NET 8 (LTS)
+
+1. Update project files (*.csproj):
+   ```xml
+   <!-- Change from -->
+   <TargetFramework>net5.0</TargetFramework>
+   <!-- To -->
+   <TargetFramework>net8.0</TargetFramework>
+   ```
+
+2. Update workflow files (.github/workflows/*.yml):
+   ```yaml
+   # Change from
+   dotnet-version: '5.0.x'
+   # To
+   dotnet-version: '8.0.x'
+   ```
+
+3. Update NuGet packages to versions compatible with .NET 8
+4. Test thoroughly for breaking changes
+
+### Migration Resources:
+- [Migrate from ASP.NET Core 5.0 to 6.0](https://learn.microsoft.com/en-us/aspnet/core/migration/50-to-60)
+- [Migrate from ASP.NET Core 6.0 to 8.0](https://learn.microsoft.com/en-us/aspnet/core/migration/60-to-80)
+- [.NET 8 Breaking Changes](https://learn.microsoft.com/en-us/dotnet/core/compatibility/8.0)
+- [.NET Support Policy](https://dotnet.microsoft.com/platform/support/policy/dotnet-core)

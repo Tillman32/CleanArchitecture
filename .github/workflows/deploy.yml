@@ -25,6 +25,8 @@ jobs:
   deploy:
     name: Deploy to ${{ github.event.inputs.environment || 'staging' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     environment:
       name: ${{ github.event.inputs.environment || 'staging' }}
 

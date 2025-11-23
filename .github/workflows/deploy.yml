@@ -25,9 +25,9 @@ jobs:
   deploy:
     name: Deploy to ${{ github.event.inputs.environment || 'staging' }}
     runs-on: ubuntu-latest
-    environment: 
+    environment:
       name: ${{ github.event.inputs.environment || 'staging' }}
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -62,7 +62,7 @@ jobs:
     # - Deploy to AWS Elastic Beanstalk
     # - Deploy to Docker/Kubernetes
     # - Deploy via SSH to VPS
-    
+
     - name: Deployment placeholder
       run: |
         echo "==================================="

@@ -24,7 +24,7 @@ on:
 jobs:
   deploy:
     name: Deploy to ${{ github.event.inputs.environment || 'staging' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     permissions:
       contents: read
     environment:

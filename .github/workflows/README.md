@@ -204,6 +204,7 @@ Add these badges to your README.md:
 ## Notes
 
 - All workflows use .NET 5.0 (note: .NET 5.0 is out of support, consider upgrading to .NET 8 or later)
+- Workflows run on `ubuntu-20.04` (required for .NET 5.0 libssl1.1 compatibility)
 - Test results are automatically uploaded and viewable in the Actions tab
 - Packages are versioned based on Git tags
 - Deploy workflow is a template and requires configuration for actual deployment
@@ -226,8 +227,10 @@ Add these badges to your README.md:
    ```yaml
    # Change from
    dotnet-version: '5.0.x'
+   runs-on: ubuntu-20.04
    # To
    dotnet-version: '8.0.x'
+   runs-on: ubuntu-latest
    ```
 
 3. Update NuGet packages to versions compatible with .NET 8

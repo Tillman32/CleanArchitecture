@@ -11,8 +11,8 @@ namespace CleanArchitecture.ClientWeb
         public static void Main(string[] args)
         {
             // Setup logging first to catch all errors
-            var logger =
-                NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            NLog.LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration("nlog.config");
+            var logger = NLog.LogManager.GetCurrentClassLogger();
 
             try
             {

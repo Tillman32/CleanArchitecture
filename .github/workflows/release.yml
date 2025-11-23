@@ -1,0 +1,73 @@
+name: Release - Publish to GitHub Packages
+
+on:
+  release:
+    types: [published]
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    name: Build and Publish NuGet Packages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '5.0.x'
+
+    - name: Extract version from tag
+      id: get_version
+      run: |
+        if [[ $GITHUB_REF == refs/tags/v* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/v}
+        else
+          VERSION="1.0.0-preview.${GITHUB_SHA::8}"
+        fi
+        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+        echo "Building version: $VERSION"
+
+    - name: Restore dependencies
+      run: dotnet restore CleanArchitecture.sln
+
+    - name: Build solution
+      run: dotnet build CleanArchitecture.sln --configuration Release --no-restore
+
+    - name: Pack CleanArchitecture.Core
+      run: |
+        dotnet pack src/CleanArchitecture.Core/CleanArchitecture.Core.csproj \
+          --configuration Release \
+          --no-build \
+          --output ./packages \
+          /p:Version=${{ steps.get_version.outputs.VERSION }} \
+          /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
+
+    - name: Pack CleanArchitecture.Infrastructure
+      run: |
+        dotnet pack src/CleanArchitecture.Infrastructure/CleanArchitecture.Infrastructure.csproj \
+          --configuration Release \
+          --no-build \
+          --output ./packages \
+          /p:Version=${{ steps.get_version.outputs.VERSION }} \
+          /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
+
+    - name: Publish to GitHub Packages
+      run: |
+        dotnet nuget push ./packages/*.nupkg \
+          --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json \
+          --api-key ${{ secrets.GITHUB_TOKEN }} \
+          --skip-duplicate
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: nuget-packages
+        path: ./packages/*.nupkg

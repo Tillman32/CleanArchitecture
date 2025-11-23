@@ -1,0 +1,50 @@
+name: CI - Build and Test
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore CleanArchitecture.sln
+
+    - name: Build solution
+      run: dotnet build CleanArchitecture.sln --configuration Release --no-restore
+
+    - name: Run tests
+      run: dotnet test CleanArchitecture.sln --configuration Release --no-build --verbosity normal --logger trx --results-directory ./test-results
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: ./test-results/*.trx
+
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Test Results
+        path: ./test-results/*.trx
+        reporter: dotnet-trx
+        fail-on-error: false

@@ -1,0 +1,85 @@
+name: CD - Deploy Application
+
+# This workflow is designed to be triggered manually or after successful releases
+# Uncomment and configure the triggers based on your deployment strategy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+        default: 'staging'
+  # Uncomment to trigger on successful releases
+  # workflow_run:
+  #   workflows: ["Release - Publish to GitHub Packages"]
+  #   types:
+  #     - completed
+
+jobs:
+  deploy:
+    name: Deploy to ${{ github.event.inputs.environment || 'staging' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment:
+      name: ${{ github.event.inputs.environment || 'staging' }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore CleanArchitecture.sln
+
+    - name: Build solution
+      run: dotnet build CleanArchitecture.sln --configuration Release --no-restore
+
+    - name: Publish application
+      run: |
+        dotnet publish src/CleanArchitecture.ClientWeb/CleanArchitecture.ClientWeb.csproj \
+          --configuration Release \
+          --output ./publish \
+          --no-build
+
+    - name: Upload publish artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: published-app-${{ github.event.inputs.environment || 'staging' }}
+        path: ./publish/
+
+    # Add your deployment steps here
+    # Examples:
+    # - Deploy to Azure App Service
+    # - Deploy to AWS Elastic Beanstalk
+    # - Deploy to Docker/Kubernetes
+    # - Deploy via SSH to VPS
+
+    - name: Deployment placeholder
+      run: |
+        echo "==================================="
+        echo "Deployment Configuration Required"
+        echo "==================================="
+        echo ""
+        echo "This is a template workflow for deploying the CleanArchitecture application."
+        echo "To complete the deployment setup, add your deployment steps here."
+        echo ""
+        echo "Common deployment targets:"
+        echo "  - Azure App Service (use azure/webapps-deploy@v2)"
+        echo "  - AWS Elastic Beanstalk"
+        echo "  - Docker containers (build and push to registry)"
+        echo "  - Kubernetes clusters"
+        echo "  - SSH deployment to VPS"
+        echo ""
+        echo "Environment: ${{ github.event.inputs.environment || 'staging' }}"
+        echo "Published artifacts are available in ./publish/"

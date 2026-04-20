@@ -10,7 +10,7 @@ I also found it fitting, that "Uncle Bob" (Robert C. Martin) shares a similar na
 
 An example of the application running on AWS (Ubuntu) is hosted here: [https://cleanarchitecture.brandontillman.com](https://cleanarchitecture.brandontillman.com/)
 
-I also wrote a blog post to pair with it here: [https://www.brandontillman.com/clean-architecture-dot-net-core/](https://www.brandontillman.com/clean-architecture-dot-net-core/)
+I also wrote a blog post to pair with it here: [[https://www.brandontillman.com/clean-architecture-dot-net-core/](https://www.brandontillman.com/clean-architecture-dot-net-core/)](https://www.brandontillman.com/blog/clean-architecture-dotnet)
 
 # Key Points:
 

@@ -16,6 +16,7 @@ namespace CleanArchitecture.Core.Data.DTO
         public DateTime DateCreated { get; set; }
         public string CreatedBy { get; set; }
         public string ImageFileName { get; set; }
+        public string Tags { get; set; }
 
         public int CategoryId { get; set; }
         public ArticleCategoryDTO Category { get; set; }

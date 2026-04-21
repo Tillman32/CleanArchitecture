@@ -11,6 +11,7 @@ namespace CleanArchitecture.Core.Data.Entity
         public string Content { get; set; }
         public string CreatedBy { get; set; }
         public string ImageFileName { get; set; }
+        public string Tags { get; set; }
 
         public virtual ArticleCategoryEntity Category { get; set; }
     }

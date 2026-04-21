@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Core.Data;
+using CleanArchitecture.Core.Data;
 using CleanArchitecture.Core.Data.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,26 +8,28 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Database.Repository
 {
-    public class GenericRepository<TEntity> : IGenericRepository<TEntity>, IDisposable
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity>
         where TEntity : class, IEntity
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IDbContextFactory<ApplicationDbContext> _factory;
 
-        public GenericRepository(ApplicationDbContext dbContext)
+        public GenericRepository(IDbContextFactory<ApplicationDbContext> factory)
         {
-            _dbContext = dbContext;
+            _factory = factory;
         }
 
         public async Task<IEnumerable<TEntity>> GetAll()
         {
-            return await _dbContext.Set<TEntity>()
+            using var ctx = _factory.CreateDbContext();
+            return await ctx.Set<TEntity>()
                 .AsNoTracking()
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<TEntity>> GetPaginated(int page, int size)
         {
-            return await _dbContext.Set<TEntity>()
+            using var ctx = _factory.CreateDbContext();
+            return await ctx.Set<TEntity>()
                 .Skip((page - 1) * size)
                 .Take(size)
                 .AsNoTracking()
@@ -36,35 +38,36 @@ namespace CleanArchitecture.Infrastructure.Database.Repository
 
         public async Task<TEntity> GetById(int id)
         {
-            return await _dbContext.Set<TEntity>()
+            using var ctx = _factory.CreateDbContext();
+            return await ctx.Set<TEntity>()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public async Task Create(TEntity entity)
         {
-            await _dbContext.Set<TEntity>().AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
+            using var ctx = _factory.CreateDbContext();
+            await ctx.Set<TEntity>().AddAsync(entity);
+            await ctx.SaveChangesAsync();
         }
 
         public async Task Update(int id, TEntity entity)
         {
-            _dbContext.Set<TEntity>().Update(entity);
-            await _dbContext.SaveChangesAsync();
+            using var ctx = _factory.CreateDbContext();
+            ctx.Set<TEntity>().Update(entity);
+            await ctx.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
         {
-            var entity = await GetById(id);
-            _dbContext.Set<TEntity>().Remove(entity);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public void Dispose()
-        {
-            if (_dbContext != null)
+            using var ctx = _factory.CreateDbContext();
+            var entity = await ctx.Set<TEntity>()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.Id == id);
+            if (entity != null)
             {
-                _dbContext.Dispose();
+                ctx.Set<TEntity>().Remove(entity);
+                await ctx.SaveChangesAsync();
             }
         }
     }

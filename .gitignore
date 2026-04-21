@@ -263,3 +263,5 @@ __pycache__/
 #Custom
 src/CleanArchitecture.ClientWeb/Properties
 src/CleanArchitecture.ClientWeb/wwwroot/uploads
+
+.DS_Store

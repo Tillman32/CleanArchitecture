@@ -1,0 +1,355 @@
+/* ─── Success Banner ─────────────────────────────────────────────────── */
+.success-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #eaf3ec;
+    border: 1px solid #3a6b45;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 24px;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    color: #2d5a3a;
+}
+
+.dismiss-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #3a6b45;
+    font-size: 14px;
+    padding: 0 4px;
+    line-height: 1;
+}
+
+.dismiss-btn:hover {
+    color: #1e3a2a;
+}
+
+/* ─── Layout ─────────────────────────────────────────────────────────── */
+.editor-layout {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    padding: 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.editor-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.publish-sidebar {
+    width: 280px;
+    flex-shrink: 0;
+}
+
+/* ─── Page Heading ───────────────────────────────────────────────────── */
+.page-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: #1e3a2a;
+    margin: 0 0 24px 0;
+    font-weight: 700;
+}
+
+/* ─── Form Groups ────────────────────────────────────────────────────── */
+.form-group {
+    margin-bottom: 16px;
+}
+
+/* ─── Title Input ────────────────────────────────────────────────────── */
+.title-input {
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 2px solid #d0dde8;
+    background: transparent;
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: #1e3a2a;
+    padding: 8px 0;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.title-input::placeholder {
+    color: #b0c4cc;
+}
+
+.title-input:focus {
+    border-bottom-color: #3a6b45;
+}
+
+/* ─── Category Select ────────────────────────────────────────────────── */
+.category-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a7080' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    border: 1px solid #d0dde8;
+    border-radius: 6px;
+    padding: 8px 36px 8px 12px;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    color: #4a6070;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+    min-width: 180px;
+}
+
+.category-select:focus {
+    border-color: #3a6b45;
+}
+
+/* ─── Toolbar ────────────────────────────────────────────────────────── */
+.toolbar {
+    display: flex;
+    gap: 4px;
+    background: #f8faf8;
+    border: 1px solid #d8e8d8;
+    border-radius: 8px;
+    padding: 6px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.toolbar-btn {
+    background: none;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    color: #5a7080;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    line-height: 1;
+}
+
+.toolbar-btn:hover,
+.toolbar-btn:focus {
+    background: #eaf3ec;
+    color: #2d5a3a;
+    outline: none;
+}
+
+.toolbar-bold {
+    font-weight: 700;
+}
+
+.toolbar-italic {
+    font-style: italic;
+}
+
+/* ─── Content Textarea ───────────────────────────────────────────────── */
+.content-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 400px;
+    border: 1px solid #d0dde8;
+    border-radius: 8px;
+    padding: 16px;
+    font-family: 'Lato', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #4a6070;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+    background: #fff;
+}
+
+.content-textarea::placeholder {
+    color: #b0c4cc;
+}
+
+.content-textarea:focus {
+    border-color: #3a6b45;
+}
+
+/* ─── Sidebar Card ───────────────────────────────────────────────────── */
+.sidebar-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(42, 53, 64, 0.07);
+}
+
+.sidebar-section-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #8aaabb;
+    margin: 0 0 12px 0;
+    font-weight: 700;
+}
+
+/* ─── Status Row ─────────────────────────────────────────────────────── */
+.status-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.status-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    color: #5a7080;
+}
+
+.status-badge {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    background: #e8eff5;
+    color: #7a90a0;
+    border-radius: 12px;
+    padding: 2px 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────── */
+.btn-publish {
+    width: 100%;
+    background: #3a6b45;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 14px;
+}
+
+.btn-publish:hover {
+    background: #2d5a3a;
+}
+
+.btn-draft {
+    width: 100%;
+    background: transparent;
+    color: #4a6070;
+    border: 1.5px solid #d0dde8;
+    border-radius: 6px;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    margin-bottom: 14px;
+}
+
+.btn-draft:hover {
+    border-color: #3a6b45;
+    color: #3a6b45;
+}
+
+/* ─── Divider ────────────────────────────────────────────────────────── */
+.divider {
+    border: none;
+    border-top: 1px solid #e8eff5;
+    margin: 4px 0 16px 0;
+}
+
+/* ─── Settings Row ───────────────────────────────────────────────────── */
+.setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.setting-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    color: #4a6070;
+}
+
+/* ─── Toggle Switch ──────────────────────────────────────────────────── */
+.toggle-label {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    cursor: pointer;
+}
+
+.toggle-label input[type="checkbox"] {
+    display: none;
+}
+
+.toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: #d0dde8;
+    border-radius: 22px;
+    transition: background 0.2s;
+}
+
+.toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.toggle-label input[type="checkbox"]:checked + .toggle-slider {
+    background: #3a6b45;
+}
+
+.toggle-label input[type="checkbox"]:checked + .toggle-slider::before {
+    transform: translateX(18px);
+}
+
+/* ─── Tags Input ─────────────────────────────────────────────────────── */
+.tags-input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d0dde8;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    color: #4a6070;
+    outline: none;
+    transition: border-color 0.2s;
+    background: #fff;
+}
+
+.tags-input::placeholder {
+    color: #b0c4cc;
+}
+
+.tags-input:focus {
+    border-color: #3a6b45;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .editor-layout {
+        flex-direction: column;
+    }
+
+    .publish-sidebar {
+        width: 100%;
+    }
+}

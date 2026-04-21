@@ -1,5 +1,7 @@
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: #e8eff5;
+    margin: 0;
 }
 
 h1:focus {
@@ -7,13 +9,13 @@ h1:focus {
 }
 
 a, .btn-link {
-    color: #0071c1;
+    color: #3a6b45;
 }
 
 .btn-primary {
     color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    background-color: #3a6b45;
+    border-color: #2d5a3a;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {

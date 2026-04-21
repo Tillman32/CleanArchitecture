@@ -1,39 +1,27 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">CleanArchitecture.WASM</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
+<nav class="topnav">
+    <div class="nav-inner">
+        <a class="nav-brand" href="">
+            <div class="brand-icon">🌲</div>
+            <span class="brand-text">Bob Ross Blog</span>
+        </a>
 
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="nav flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
+        <button class="nav-toggler" @onclick="ToggleNav" title="Toggle navigation">&#9776;</button>
+
+        <div class="@NavBodyClass">
+            <div class="nav-links">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">Home</NavLink>
+                <span class="nav-separator"></span>
+                <NavLink class="nav-link" href="posts">Posts</NavLink>
+            </div>
+            <div class="nav-actions">
+                <NavLink class="btn-new-post" href="new-post">+ New Post</NavLink>
+            </div>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-    </nav>
-</div>
+    </div>
+</nav>
 
 @code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
+    private bool collapsed = true;
+    private string NavBodyClass => collapsed ? "nav-body nav-collapsed" : "nav-body";
+    private void ToggleNav() => collapsed = !collapsed;
 }

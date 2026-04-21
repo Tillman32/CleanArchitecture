@@ -1,0 +1,111 @@
+@page "/new-post"
+
+<PageTitle>New Post</PageTitle>
+
+@if (published)
+{
+    <div class="success-banner">
+        <span>🎨 Post published! Your happy little post is live.</span>
+        <button class="dismiss-btn" @onclick="() => published = false">✕</button>
+    </div>
+}
+
+<div class="editor-layout">
+    <!-- Left: Editor Form -->
+    <div class="editor-main">
+        <h1 class="page-heading">New Post</h1>
+
+        <div class="form-group">
+            <input class="title-input"
+                   type="text"
+                   placeholder="Post title..."
+                   @bind="post.Title"
+                   @bind:event="oninput" />
+        </div>
+
+        <div class="form-group">
+            <select class="category-select" @bind="post.Category">
+                <option value="Mountains">Mountains</option>
+                <option value="Waterscapes">Waterscapes</option>
+                <option value="Seasons">Seasons</option>
+                <option value="Technique">Technique</option>
+                <option value="Nature">Nature</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div class="toolbar">
+            <button type="button" class="toolbar-btn toolbar-bold">B</button>
+            <button type="button" class="toolbar-btn toolbar-italic">I</button>
+            <button type="button" class="toolbar-btn">H2</button>
+            <button type="button" class="toolbar-btn">H3</button>
+            <button type="button" class="toolbar-btn">❝</button>
+            <button type="button" class="toolbar-btn">🔗</button>
+            <button type="button" class="toolbar-btn">🖼</button>
+        </div>
+
+        <div class="form-group">
+            <textarea class="content-textarea"
+                      placeholder="Write your post here... every painting starts with a single brushstroke."
+                      @bind="post.Content"
+                      @bind:event="oninput"></textarea>
+        </div>
+    </div>
+
+    <!-- Right: Publish Sidebar -->
+    <aside class="publish-sidebar">
+        <div class="sidebar-card">
+            <p class="sidebar-section-label">Publish</p>
+
+            <div class="status-row">
+                <span class="status-label">Status:</span>
+                <span class="status-badge">Draft</span>
+            </div>
+
+            <button class="btn-publish" @onclick="PublishPost">Publish Now</button>
+
+            <hr class="divider" />
+
+            <button class="btn-draft">Save Draft</button>
+
+            <hr class="divider" />
+
+            <p class="sidebar-section-label">Post Settings</p>
+
+            <div class="setting-row">
+                <span class="setting-label">Featured post</span>
+                <label class="toggle-label">
+                    <input type="checkbox" @bind="post.IsFeatured" />
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="form-group">
+                <input class="tags-input"
+                       type="text"
+                       placeholder="Add tags..."
+                       @bind="post.Tags"
+                       @bind:event="oninput" />
+            </div>
+        </div>
+    </aside>
+</div>
+
+@code {
+    private PostModel post = new();
+    private bool published = false;
+
+    private void PublishPost()
+    {
+        published = true;
+    }
+
+    private class PostModel
+    {
+        public string Title { get; set; } = "";
+        public string Category { get; set; } = "Mountains";
+        public string Content { get; set; } = "";
+        public bool IsFeatured { get; set; }
+        public string Tags { get; set; } = "";
+    }
+}

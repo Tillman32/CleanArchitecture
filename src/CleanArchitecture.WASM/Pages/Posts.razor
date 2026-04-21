@@ -1,0 +1,128 @@
+@page "/posts"
+@using System.Linq
+
+<PageTitle>All Posts — Bob Ross Blog</PageTitle>
+
+<div class="posts-page">
+
+    <div class="posts-header">
+        <h1 class="page-title">All Posts</h1>
+        <div class="category-filter">
+            @foreach (var cat in categories)
+            {
+                <button class="pill @(activeCategory == cat ? "pill-active" : "")"
+                        @onclick="() => SetCategory(cat)">
+                    @cat
+                </button>
+            }
+        </div>
+    </div>
+
+    <div class="results-count">
+        Showing @PagedPosts.Count of @FilteredPosts.Count posts
+    </div>
+
+    <div class="post-list">
+        @foreach (var post in PagedPosts)
+        {
+            <div class="post-row">
+                <div class="post-image @GetImageClass(post.Category)">
+                    @GetEmoji(post.Category)
+                </div>
+                <div class="post-body">
+                    <div class="post-category">@post.Category</div>
+                    <h2 class="post-title">@post.Title</h2>
+                    <p class="post-excerpt">@post.Excerpt</p>
+                    <div class="post-tags">
+                        @foreach (var tag in post.Tags)
+                        {
+                            <span class="tag">@tag</span>
+                        }
+                    </div>
+                </div>
+                <div class="post-aside">
+                    <span class="post-date">@post.Date</span>
+                    <a href="posts/@post.Id" class="btn-read">Read Post &rarr;</a>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (TotalPages > 1)
+    {
+        <div class="pagination">
+            <button class="page-btn @(currentPage == 1 ? "page-btn-disabled" : "")"
+                    disabled="@(currentPage == 1)"
+                    @onclick="() => { if (currentPage > 1) currentPage--; }">
+                Previous
+            </button>
+            <span class="page-indicator">Page @currentPage of @TotalPages</span>
+            <button class="page-btn @(currentPage == TotalPages ? "page-btn-disabled" : "")"
+                    disabled="@(currentPage == TotalPages)"
+                    @onclick="() => { if (currentPage < TotalPages) currentPage++; }">
+                Next
+            </button>
+        </div>
+    }
+
+</div>
+
+@code {
+    private record Post(int Id, string Category, string Title, string Excerpt, string Date, string[] Tags);
+
+    private List<string> categories = new() { "All", "Mountains", "Waterscapes", "Seasons", "Technique", "Nature" };
+
+    private List<Post> allPosts = new()
+    {
+        new(1, "Mountains",   "Painting the Majestic Peaks of Autumn",           "How to capture snowcaps, pine shadows, and golden hour light.",     "April 15, 2026", new[]{"mountains","painting","autumn"}),
+        new(2, "Technique",   "The Fan Brush: Secret Weapon for Happy Trees",     "One fan brush loaded with two colors produces an entire forest.",   "April 10, 2026", new[]{"technique","trees","brush"}),
+        new(3, "Waterscapes", "Reflections: Painting Still Water in the Forest",  "Still water mirrors the world above. Master reflections.",          "April 5, 2026",  new[]{"water","reflections","forest"}),
+        new(4, "Seasons",     "Winter White: Snow Scenes from Wet-on-Wet",        "Blend snow into sky seamlessly with the wet-on-wet technique.",     "March 29, 2026", new[]{"winter","snow","seasons"}),
+        new(5, "Nature",      "The Joy of Painting Wildflowers",                  "Wildflowers bring life and color to any landscape painting.",       "March 22, 2026", new[]{"nature","flowers","color"}),
+        new(6, "Mountains",   "How to Paint Dramatic Storm Clouds Over Peaks",    "Storm clouds add emotion and tension to mountain scenery.",         "March 15, 2026", new[]{"mountains","clouds","drama"}),
+        new(7, "Technique",   "Wet-on-Wet: The Secret Behind Bob's Smooth Skies", "The wet-on-wet oil technique is what makes Bob's skies magical.",   "March 8, 2026",  new[]{"technique","sky","wet-on-wet"}),
+        new(8, "Waterscapes", "Painting a Peaceful Cabin by the Lake",            "A lakeside cabin at dusk is the perfect peaceful scene.",           "March 1, 2026",  new[]{"water","cabin","peace"}),
+        new(9, "Seasons",     "Autumn Foliage: Capturing Fall's Fiery Colors",    "Fall transforms the forest into a canvas of reds, oranges, golds.", "Feb 22, 2026",   new[]{"autumn","foliage","seasons"}),
+    };
+
+    private string activeCategory = "All";
+    private int currentPage = 1;
+    private int pageSize = 4;
+
+    private List<Post> FilteredPosts => activeCategory == "All"
+        ? allPosts
+        : allPosts.Where(p => p.Category == activeCategory).ToList();
+
+    private List<Post> PagedPosts => FilteredPosts
+        .Skip((currentPage - 1) * pageSize)
+        .Take(pageSize)
+        .ToList();
+
+    private int TotalPages => (int)Math.Ceiling(FilteredPosts.Count / (double)pageSize);
+
+    private void SetCategory(string cat)
+    {
+        activeCategory = cat;
+        currentPage = 1;
+    }
+
+    private string GetImageClass(string category) => category switch
+    {
+        "Mountains"   => "img-mountains",
+        "Technique"   => "img-trees",
+        "Waterscapes" => "img-water",
+        "Seasons"     => "img-seasons",
+        "Nature"      => "img-nature",
+        _             => "img-mountains"
+    };
+
+    private string GetEmoji(string category) => category switch
+    {
+        "Mountains"   => "🏔️",
+        "Technique"   => "🌲",
+        "Waterscapes" => "🌊",
+        "Seasons"     => "🍂",
+        "Nature"      => "🌸",
+        _             => "🎨"
+    };
+}

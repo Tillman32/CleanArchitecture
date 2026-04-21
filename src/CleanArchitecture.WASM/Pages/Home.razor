@@ -1,7 +1,89 @@
-﻿@page "/"
+@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Bob Ross Blog</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="hero">
+    <div class="hero-inner">
+        <div class="hero-eyebrow">A Celebration of Joy &amp; Painting</div>
+        <h1 class="hero-title">The World of Bob Ross</h1>
+        <p class="hero-subtitle">
+            Exploring the techniques, philosophy, and timeless beauty of America's most beloved painter &mdash;
+            one happy little post at a time.
+        </p>
+        <div class="hero-actions">
+            <a href="posts" class="btn-hero-primary">Browse All Posts</a>
+            <a href="new-post" class="btn-hero-outline">Write a Post</a>
+        </div>
+    </div>
+</div>
 
-Welcome to your new app.
+<div class="content-area">
+
+    <div class="section-header">
+        <h2 class="section-title">Featured Post</h2>
+    </div>
+    <div class="featured-card">
+        <div class="featured-image">🏔️</div>
+        <div class="featured-body">
+            <span class="featured-badge">Featured</span>
+            <h3 class="featured-title">There Are No Mistakes, Only Happy Accidents</h3>
+            <p class="featured-excerpt">
+                In painting &mdash; as in life &mdash; what looks like a mistake is often the beginning
+                of something beautiful. Bob Ross taught us that imperfection is just an invitation
+                to create something unexpected.
+            </p>
+            <div class="post-meta">
+                <span class="meta-date">April 20, 2026</span>
+                <span class="meta-divider">&middot;</span>
+                <span class="meta-read">5 min read</span>
+                <a href="posts/1" class="btn-read">Read Post &rarr;</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-header">
+        <h2 class="section-title">Latest Posts</h2>
+        <a href="posts" class="section-link">View all &rarr;</a>
+    </div>
+    <div class="post-grid">
+        <div class="post-card">
+            <div class="card-image card-mountains">🏔️</div>
+            <div class="card-body">
+                <div class="card-category">Mountains</div>
+                <h4 class="card-title">Painting the Majestic Peaks of Autumn</h4>
+                <p class="card-excerpt">How to capture snowcaps, pine shadows, and the golden hour on a canvas.</p>
+                <div class="card-footer">
+                    <span class="meta-date">April 15, 2026</span>
+                    <a href="posts/2" class="link-read">Read &rarr;</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="post-card">
+            <div class="card-image card-trees">🌲</div>
+            <div class="card-body">
+                <div class="card-category">Technique</div>
+                <h4 class="card-title">The Fan Brush: Secret Weapon for Happy Trees</h4>
+                <p class="card-excerpt">One fan brush loaded with two colors produces an entire forest in under three minutes.</p>
+                <div class="card-footer">
+                    <span class="meta-date">April 10, 2026</span>
+                    <a href="posts/3" class="link-read">Read &rarr;</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="post-card">
+            <div class="card-image card-water">🌊</div>
+            <div class="card-body">
+                <div class="card-category">Waterscapes</div>
+                <h4 class="card-title">Reflections: Painting Still Water in the Forest</h4>
+                <p class="card-excerpt">Learning to paint reflections turns a good painting into an unforgettable one.</p>
+                <div class="card-footer">
+                    <span class="meta-date">April 5, 2026</span>
+                    <a href="posts/4" class="link-read">Read &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

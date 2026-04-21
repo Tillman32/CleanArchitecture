@@ -1,0 +1,149 @@
+@page "/posts/{Id:int}"
+
+<PageTitle>@post.Title — Bob Ross Blog</PageTitle>
+
+<div class="post-detail">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="/" class="breadcrumb-link">Home</a>
+        <span class="breadcrumb-sep">&rsaquo;</span>
+        <a href="/posts" class="breadcrumb-link">Posts</a>
+        <span class="breadcrumb-sep">&rsaquo;</span>
+        <span class="breadcrumb-current">@post.Title</span>
+    </nav>
+
+    <!-- Category badge -->
+    <div class="post-category">@post.Category</div>
+
+    <!-- Title -->
+    <h1 class="post-title">@post.Title</h1>
+
+    <!-- Meta row -->
+    <div class="post-meta">
+        <span class="author-avatar">🎨</span>
+        <span class="author-name">Bob Ross</span>
+        <span class="meta-divider">&middot;</span>
+        <span class="meta-date">@post.Date</span>
+        <span class="meta-divider">&middot;</span>
+        <span class="meta-read">@post.ReadTime</span>
+    </div>
+
+    <!-- Hero image -->
+    <div class="hero-image">
+        <span class="hero-emoji">🏔️</span>
+    </div>
+
+    <!-- Post body -->
+    <div class="post-body">
+        <p>
+            There's a special kind of magic that happens when you stand before a blank canvas.
+            In the high mountain country, where the air is thin and the silence is absolute,
+            nature has already painted a masterpiece — and all we have to do is capture it.
+            Every craggy peak, every drift of snow, every shadow cast by a passing cloud is an
+            invitation to pick up a brush and join in the conversation.
+        </p>
+
+        <h2>Starting with the Sky</h2>
+
+        <p>
+            We always begin with the sky, because the sky sets the mood for everything that follows.
+            Load your two-inch brush with a mix of Phthalo Blue and Titanium White — just a little
+            blue goes a very long way. Work across the canvas with long, gentle horizontal strokes,
+            letting the pressure vary naturally. Don't fight the brush. Let it glide. Near the
+            horizon, lighten the mix and let it warm toward a soft golden yellow. This is where
+            the distant peaks will live, and they need a gentle backdrop to emerge from the mist.
+        </p>
+
+        <blockquote>
+            "We don't make mistakes — we just have happy accidents. Talent is a pursued interest.
+            Anything that you're willing to practice, you can do."
+        </blockquote>
+
+        <h2>Building the Mountains</h2>
+
+        <p>
+            Mountains are not difficult — they're just triangles with personality. Using a palette
+            knife, mix a dark value from Van Dyke Brown, Midnight Black, and just a touch of
+            Prussian Blue. Apply the color at the peak and pull downward with the knife edge,
+            letting the strokes fan out like light radiating from a source. The key is to leave
+            the lower edge soft and irregular — mountains don't have clean bases. They fade into
+            the world. Once your darks are in, mix a highlight of Titanium White with a hint of
+            Bright Red — this warm snow color will glow against the cool shadows. Apply the
+            highlights only on the top edges and wherever sunlight would catch a face of rock.
+        </p>
+
+        <p>
+            Now step back. That mountain is alive. It has depth, it has drama, and it belongs
+            right where you put it. You made that. Nobody else in the world would have put that
+            mountain exactly there, or given it exactly that shadow. That's what makes your
+            painting uniquely yours — and that, more than any technique, is the real secret
+            Bob Ross spent thirty-one seasons trying to share.
+        </p>
+    </div>
+
+    <!-- Tags -->
+    <div class="tags-row">
+        <span class="tag">Mountains</span>
+        <span class="tag">Technique</span>
+        <span class="tag">Nature</span>
+    </div>
+
+    <hr class="post-divider" />
+
+    <!-- More Posts -->
+    <div class="more-posts-section">
+        <h2 class="more-posts-title">More Posts</h2>
+        <div class="more-posts-grid">
+            <div class="post-card">
+                <div class="card-image card-mountains">🏔️</div>
+                <div class="card-body">
+                    <div class="card-category">Mountains</div>
+                    <h4 class="card-title">Painting the Majestic Peaks of Autumn</h4>
+                    <p class="card-excerpt">How to capture snowcaps, pine shadows, and the golden hour on a canvas.</p>
+                    <div class="card-footer">
+                        <span class="meta-date">April 15, 2026</span>
+                        <a href="/posts/2" class="link-read">Read &rarr;</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="card-image card-trees">🌲</div>
+                <div class="card-body">
+                    <div class="card-category">Technique</div>
+                    <h4 class="card-title">The Fan Brush: Secret Weapon for Happy Trees</h4>
+                    <p class="card-excerpt">One fan brush loaded with two colors produces an entire forest in under three minutes.</p>
+                    <div class="card-footer">
+                        <span class="meta-date">April 10, 2026</span>
+                        <a href="/posts/3" class="link-read">Read &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back link -->
+    <a href="/posts" class="back-link">&larr; Back to Posts</a>
+
+</div>
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    private PostData post = new PostData
+    {
+        Title = "There Are No Mistakes, Only Happy Accidents",
+        Category = "Mountains",
+        Date = "April 20, 2026",
+        ReadTime = "5 min read"
+    };
+
+    private class PostData
+    {
+        public string Title { get; set; } = "";
+        public string Category { get; set; } = "";
+        public string Date { get; set; } = "";
+        public string ReadTime { get; set; } = "";
+    }
+}

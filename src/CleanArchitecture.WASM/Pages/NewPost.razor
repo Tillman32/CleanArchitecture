@@ -1,4 +1,9 @@
 @page "/new-post"
+@using CleanArchitecture.Core.Service
+@using CleanArchitecture.Core.Data.DTO
+@inject IArticleService ArticleService
+@inject IArticleCategoryService CategoryService
+@inject NavigationManager Nav
 
 <PageTitle>New Post</PageTitle>
 
@@ -7,6 +12,14 @@
     <div class="success-banner">
         <span>🎨 Post published! Your happy little post is live.</span>
         <button class="dismiss-btn" @onclick="() => published = false">✕</button>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <div class="error-banner">
+        <span>@error</span>
+        <button class="dismiss-btn" @onclick="() => error = null">✕</button>
     </div>
 }
 
@@ -24,13 +37,11 @@
         </div>
 
         <div class="form-group">
-            <select class="category-select" @bind="post.Category">
-                <option value="Mountains">Mountains</option>
-                <option value="Waterscapes">Waterscapes</option>
-                <option value="Seasons">Seasons</option>
-                <option value="Technique">Technique</option>
-                <option value="Nature">Nature</option>
-                <option value="Other">Other</option>
+            <select class="category-select" @bind="post.CategoryId">
+                @foreach (var cat in categories)
+                {
+                    <option value="@cat.Id">@cat.Title</option>
+                }
             </select>
         </div>
 
@@ -62,7 +73,9 @@
                 <span class="status-badge">Draft</span>
             </div>
 
-            <button class="btn-publish" @onclick="PublishPost">Publish Now</button>
+            <button class="btn-publish" @onclick="PublishPost" disabled="@saving">
+                @(saving ? "Publishing..." : "Publish Now")
+            </button>
 
             <hr class="divider" />
 
@@ -72,18 +85,10 @@
 
             <p class="sidebar-section-label">Post Settings</p>
 
-            <div class="setting-row">
-                <span class="setting-label">Featured post</span>
-                <label class="toggle-label">
-                    <input type="checkbox" @bind="post.IsFeatured" />
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-
             <div class="form-group">
                 <input class="tags-input"
                        type="text"
-                       placeholder="Add tags..."
+                       placeholder="Add tags (comma separated)..."
                        @bind="post.Tags"
                        @bind:event="oninput" />
             </div>
@@ -92,20 +97,46 @@
 </div>
 
 @code {
-    private PostModel post = new();
-    private bool published = false;
+    private ArticleDTO post = new() { Tags = "" };
+    private List<ArticleCategoryDTO> categories = new();
+    private bool published;
+    private bool saving;
+    private string? error;
 
-    private void PublishPost()
+    protected override async Task OnInitializedAsync()
     {
-        published = true;
+        var cats = await CategoryService.ListAllArticleCategoriesAsync();
+        categories = cats?.ToList() ?? new();
+        if (categories.Count > 0)
+            post.CategoryId = categories[0].Id;
     }
 
-    private class PostModel
+    private async Task PublishPost()
     {
-        public string Title { get; set; } = "";
-        public string Category { get; set; } = "Mountains";
-        public string Content { get; set; } = "";
-        public bool IsFeatured { get; set; }
-        public string Tags { get; set; } = "";
+        if (string.IsNullOrWhiteSpace(post.Title))
+        {
+            error = "Title is required.";
+            return;
+        }
+
+        saving = true;
+        error = null;
+
+        try
+        {
+            await ArticleService.CreateArticleAsync(post);
+            published = true;
+            post = new ArticleDTO { Tags = "" };
+            if (categories.Count > 0)
+                post.CategoryId = categories[0].Id;
+        }
+        catch (Exception ex)
+        {
+            error = $"Failed to publish: {ex.Message}";
+        }
+        finally
+        {
+            saving = false;
+        }
     }
 }

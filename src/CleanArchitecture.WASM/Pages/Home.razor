@@ -1,4 +1,7 @@
 @page "/"
+@using CleanArchitecture.Core.Service
+@using CleanArchitecture.Core.Data.DTO
+@inject IArticleService ArticleService
 
 <PageTitle>Bob Ross Blog</PageTitle>
 
@@ -19,71 +22,80 @@
 
 <div class="content-area">
 
-    <div class="section-header">
-        <h2 class="section-title">Featured Post</h2>
-    </div>
-    <div class="featured-card">
-        <div class="featured-image">🏔️</div>
-        <div class="featured-body">
-            <span class="featured-badge">Featured</span>
-            <h3 class="featured-title">There Are No Mistakes, Only Happy Accidents</h3>
-            <p class="featured-excerpt">
-                In painting &mdash; as in life &mdash; what looks like a mistake is often the beginning
-                of something beautiful. Bob Ross taught us that imperfection is just an invitation
-                to create something unexpected.
-            </p>
-            <div class="post-meta">
-                <span class="meta-date">April 20, 2026</span>
-                <span class="meta-divider">&middot;</span>
-                <span class="meta-read">5 min read</span>
-                <a href="posts/1" class="btn-read">Read Post &rarr;</a>
-            </div>
+    @if (featured != null)
+    {
+        <div class="section-header">
+            <h2 class="section-title">Featured Post</h2>
         </div>
-    </div>
-
-    <div class="section-header">
-        <h2 class="section-title">Latest Posts</h2>
-        <a href="posts" class="section-link">View all &rarr;</a>
-    </div>
-    <div class="post-grid">
-        <div class="post-card">
-            <div class="card-image card-mountains">🏔️</div>
-            <div class="card-body">
-                <div class="card-category">Mountains</div>
-                <h4 class="card-title">Painting the Majestic Peaks of Autumn</h4>
-                <p class="card-excerpt">How to capture snowcaps, pine shadows, and the golden hour on a canvas.</p>
-                <div class="card-footer">
-                    <span class="meta-date">April 15, 2026</span>
-                    <a href="posts/2" class="link-read">Read &rarr;</a>
+        <div class="featured-card">
+            <div class="featured-image">@GetEmoji(featured.Category?.Title)</div>
+            <div class="featured-body">
+                <span class="featured-badge">Featured</span>
+                <h3 class="featured-title">@featured.Title</h3>
+                <p class="featured-excerpt">@featured.ContentPreview</p>
+                <div class="post-meta">
+                    <span class="meta-date">@featured.DateCreated.ToString("MMMM d, yyyy")</span>
+                    <a href="posts/@featured.Id" class="btn-read">Read Post &rarr;</a>
                 </div>
             </div>
         </div>
+    }
 
-        <div class="post-card">
-            <div class="card-image card-trees">🌲</div>
-            <div class="card-body">
-                <div class="card-category">Technique</div>
-                <h4 class="card-title">The Fan Brush: Secret Weapon for Happy Trees</h4>
-                <p class="card-excerpt">One fan brush loaded with two colors produces an entire forest in under three minutes.</p>
-                <div class="card-footer">
-                    <span class="meta-date">April 10, 2026</span>
-                    <a href="posts/3" class="link-read">Read &rarr;</a>
-                </div>
-            </div>
+    @if (latestPosts.Count > 0)
+    {
+        <div class="section-header">
+            <h2 class="section-title">Latest Posts</h2>
+            <a href="posts" class="section-link">View all &rarr;</a>
         </div>
-
-        <div class="post-card">
-            <div class="card-image card-water">🌊</div>
-            <div class="card-body">
-                <div class="card-category">Waterscapes</div>
-                <h4 class="card-title">Reflections: Painting Still Water in the Forest</h4>
-                <p class="card-excerpt">Learning to paint reflections turns a good painting into an unforgettable one.</p>
-                <div class="card-footer">
-                    <span class="meta-date">April 5, 2026</span>
-                    <a href="posts/4" class="link-read">Read &rarr;</a>
+        <div class="post-grid">
+            @foreach (var post in latestPosts)
+            {
+                <div class="post-card">
+                    <div class="card-image @GetCardClass(post.Category?.Title)">@GetEmoji(post.Category?.Title)</div>
+                    <div class="card-body">
+                        <div class="card-category">@(post.Category?.Title ?? "Other")</div>
+                        <h4 class="card-title">@post.Title</h4>
+                        <p class="card-excerpt">@post.ContentPreview</p>
+                        <div class="card-footer">
+                            <span class="meta-date">@post.DateCreated.ToString("MMMM d, yyyy")</span>
+                            <a href="posts/@post.Id" class="link-read">Read &rarr;</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
-    </div>
+    }
 
 </div>
+
+@code {
+    private ArticleDTO? featured;
+    private List<ArticleDTO> latestPosts = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var all = (await ArticleService.ListAllArticlesAsync())?.ToList() ?? new();
+        featured = all.FirstOrDefault();
+        latestPosts = all.Skip(1).Take(3).ToList();
+    }
+
+    private string GetEmoji(string? category) => category switch
+    {
+        "Mountains"   => "🏔️",
+        "Technique"   => "🌲",
+        "Waterscapes" => "🌊",
+        "Seasons"     => "🍂",
+        "Nature"      => "🌸",
+        _             => "🎨"
+    };
+
+    private string GetCardClass(string? category) => category switch
+    {
+        "Mountains"   => "card-mountains",
+        "Technique"   => "card-trees",
+        "Waterscapes" => "card-water",
+        "Seasons"     => "card-seasons",
+        "Nature"      => "card-nature",
+        _             => "card-mountains"
+    };
+}

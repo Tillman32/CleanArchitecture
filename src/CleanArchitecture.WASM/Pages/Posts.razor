@@ -1,5 +1,7 @@
 @page "/posts"
 @using System.Linq
+@using CleanArchitecture.Core.Service
+@inject IArticleService ArticleService
 
 <PageTitle>All Posts — Bob Ross Blog</PageTitle>
 
@@ -70,24 +72,26 @@
 @code {
     private record Post(int Id, string Category, string Title, string Excerpt, string Date, string[] Tags);
 
-    private List<string> categories = new() { "All", "Mountains", "Waterscapes", "Seasons", "Technique", "Nature" };
+    private List<string> categories = new() { "All", "Mountains", "Waterscapes", "Seasons", "Technique", "Nature", "Other" };
 
-    private List<Post> allPosts = new()
-    {
-        new(1, "Mountains",   "Painting the Majestic Peaks of Autumn",           "How to capture snowcaps, pine shadows, and golden hour light.",     "April 15, 2026", new[]{"mountains","painting","autumn"}),
-        new(2, "Technique",   "The Fan Brush: Secret Weapon for Happy Trees",     "One fan brush loaded with two colors produces an entire forest.",   "April 10, 2026", new[]{"technique","trees","brush"}),
-        new(3, "Waterscapes", "Reflections: Painting Still Water in the Forest",  "Still water mirrors the world above. Master reflections.",          "April 5, 2026",  new[]{"water","reflections","forest"}),
-        new(4, "Seasons",     "Winter White: Snow Scenes from Wet-on-Wet",        "Blend snow into sky seamlessly with the wet-on-wet technique.",     "March 29, 2026", new[]{"winter","snow","seasons"}),
-        new(5, "Nature",      "The Joy of Painting Wildflowers",                  "Wildflowers bring life and color to any landscape painting.",       "March 22, 2026", new[]{"nature","flowers","color"}),
-        new(6, "Mountains",   "How to Paint Dramatic Storm Clouds Over Peaks",    "Storm clouds add emotion and tension to mountain scenery.",         "March 15, 2026", new[]{"mountains","clouds","drama"}),
-        new(7, "Technique",   "Wet-on-Wet: The Secret Behind Bob's Smooth Skies", "The wet-on-wet oil technique is what makes Bob's skies magical.",   "March 8, 2026",  new[]{"technique","sky","wet-on-wet"}),
-        new(8, "Waterscapes", "Painting a Peaceful Cabin by the Lake",            "A lakeside cabin at dusk is the perfect peaceful scene.",           "March 1, 2026",  new[]{"water","cabin","peace"}),
-        new(9, "Seasons",     "Autumn Foliage: Capturing Fall's Fiery Colors",    "Fall transforms the forest into a canvas of reds, oranges, golds.", "Feb 22, 2026",   new[]{"autumn","foliage","seasons"}),
-    };
+    private List<Post> allPosts = new();
 
     private string activeCategory = "All";
     private int currentPage = 1;
     private int pageSize = 4;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var dtos = await ArticleService.ListAllArticlesAsync();
+        allPosts = dtos?.Select(dto => new Post(
+            dto.Id,
+            dto.Category?.Title ?? "Other",
+            dto.Title,
+            dto.ContentPreview ?? "",
+            dto.DateCreated.ToString("MMMM d, yyyy"),
+            dto.Tags?.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries) ?? Array.Empty<string>()
+        )).ToList() ?? new();
+    }
 
     private List<Post> FilteredPosts => activeCategory == "All"
         ? allPosts

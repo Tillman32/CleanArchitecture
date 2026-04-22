@@ -35,6 +35,13 @@ namespace CleanArchitecture.Infrastructure.Database
 
         private static async Task SeedArticles(ApplicationDbContext context)
         {
+            var mountains   = context.ArticleCategories.First(c => c.Title == "Mountains");
+            var waterscapes = context.ArticleCategories.First(c => c.Title == "Waterscapes");
+            var seasons     = context.ArticleCategories.First(c => c.Title == "Seasons");
+            var technique   = context.ArticleCategories.First(c => c.Title == "Technique");
+            var nature      = context.ArticleCategories.First(c => c.Title == "Nature");
+            var other       = context.ArticleCategories.First(c => c.Title == "Other");
+
             var articles = new ArticleEntity[]
             {
                 new()
@@ -52,7 +59,8 @@ Bob spent thirty-one seasons teaching not just painting, but a way of seeing. Ev
                     DateCreated = new DateTime(2026, 4, 20),
                     CreatedBy = "Bob Ross",
                     Tags = "philosophy,painting,mindset",
-                    ImageFileName = ""
+                    ImageFileName = "",
+                    Category = other
                 },
                 new()
                 {
@@ -61,7 +69,7 @@ Bob spent thirty-one seasons teaching not just painting, but a way of seeing. Ev
                     ContentPreview = "How to capture snowcaps, pine shadows, and golden hour light.",
                     Content = @"How to capture snowcaps, pine shadows, and golden hour light on canvas.
 
-Start with the sky — always the sky. A warm Cadmium Yellow horizon fading to Phthalo Blue at the top sets the mood for everything below. Let it dry slightly before blocking in the distant mountains with a grey-purple mix. These far peaks should be lighter, cooler, softer — atmospheric perspective (the way air scatters light, making distant things look bluer and hazier) does the work.
+Start with the sky — always the sky. A warm Cadmium Yellow horizon fading to Phthalo Blue at the top sets the mood for everything below. Let it dry slightly before blocking in the distant mountains with a grey-purple mix. These far peaks should be lighter, cooler, softer — atmospheric perspective does the work.
 
 For the foreground pines, load your fan brush with Sap Green and Van Dyke Brown. Press firmly at the base of each tree and lift toward the tip. One stroke per branch. Resist the urge to go back and fuss. The trees paint themselves.
 
@@ -69,7 +77,8 @@ The snow on the peaks comes last — pure Titanium White applied with the edge o
                     DateCreated = new DateTime(2026, 4, 15),
                     CreatedBy = "Bob Ross",
                     Tags = "mountains,painting,autumn",
-                    ImageFileName = ""
+                    ImageFileName = "",
+                    Category = mountains
                 },
                 new()
                 {
@@ -82,13 +91,12 @@ Load the fan brush with a dark value on one side (Van Dyke Brown or Alizarin Cri
 
 Press the brush to the canvas base-first, then pull straight up while slightly twisting your wrist. The dark side becomes shadow, the light side becomes sunlight hitting the leaves. Stack these motions from the ground up, each layer slightly narrower than the last. A full tree in four strokes.
 
-For distant trees, use less paint and lighter pressure. For foreground, more paint, heavier contact. The forest has depth before you've laid a single other stroke.
-
 This is one of Bob's most-copied techniques — and for good reason. It turns beginners into confident painters in about sixty seconds.",
                     DateCreated = new DateTime(2026, 4, 10),
                     CreatedBy = "Bob Ross",
                     Tags = "technique,trees,brush",
-                    ImageFileName = ""
+                    ImageFileName = "",
+                    Category = technique
                 },
                 new()
                 {
@@ -101,13 +109,12 @@ The key insight: reflections are not copies. They are slightly darker, slightly 
 
 Paint the scene above the water first. Once the upper half is complete, take your fan brush and pull the colors straight downward into the water area with long vertical strokes. The colors blend and soften — that blurring is what sells the illusion.
 
-Then, while everything is still wet, take a clean, dry fan brush and use a single horizontal sweep across the reflection to create the subtle ripple. One stroke. Maybe two. The more you add, the less believable it becomes.
-
-The dark line between reflection and land (the waterline) is what separates amateurs from painters who've thought about what they're looking at.",
+Then, while everything is still wet, take a clean, dry fan brush and use a single horizontal sweep across the reflection to create the subtle ripple. One stroke. Maybe two.",
                     DateCreated = new DateTime(2026, 4, 5),
                     CreatedBy = "Bob Ross",
                     Tags = "water,reflections,forest",
-                    ImageFileName = ""
+                    ImageFileName = "",
+                    Category = waterscapes
                 },
                 new()
                 {
@@ -118,15 +125,14 @@ The dark line between reflection and land (the waterline) is what separates amat
 
 Winter paintings live or die on the relationship between sky and snow. They need to feel like the same cold light is touching both. Wet-on-wet oil painting makes this possible: because the sky is still wet when you add the snow, the edges bleed together naturally.
 
-Start with a cool, light sky — Titanium White tinted with a touch of Phthalo Blue and a whisper of Alizarin Crimson. Work this across the entire canvas, including where the ground will be. Now you have a unified light base.
+Start with a cool, light sky — Titanium White tinted with a touch of Phthalo Blue and a whisper of Alizarin Crimson. Work this across the entire canvas, including where the ground will be.
 
-Into this wet ground, drop your snow masses. Load a palette knife with pure Titanium White and apply in thick, flat strokes — ground planes are flat, so the strokes should be horizontal. Where the knife leaves a raised edge, that's the crust of a snowdrift catching light.
-
-Trees and shrubs appear darker against the white because of the contrast, not because you've repainted them in a new color. That's wet-on-wet doing the heavy lifting.",
+Into this wet ground, drop your snow masses. Load a palette knife with pure Titanium White and apply in thick, flat strokes — ground planes are flat, so the strokes should be horizontal.",
                     DateCreated = new DateTime(2026, 3, 29),
                     CreatedBy = "Bob Ross",
                     Tags = "winter,snow,seasons",
-                    ImageFileName = ""
+                    ImageFileName = "",
+                    Category = seasons
                 },
                 new()
                 {
@@ -135,17 +141,16 @@ Trees and shrubs appear darker against the white because of the contrast, not be
                     ContentPreview = "Wildflowers bring life and color to any landscape painting.",
                     Content = @"Wildflowers bring life and color to any landscape painting.
 
-Wildflowers are Bob's favorite finishing touch — a few quick strokes that transform a quiet landscape into something alive. The technique is simple and fast, which is the point. Overthinking flowers produces flowers that look overthought.
+Wildflowers are Bob's favorite finishing touch — a few quick strokes that transform a quiet landscape into something alive. The technique is simple and fast, which is the point.
 
 Load a small round brush with a bright color — Cadmium Yellow, Alizarin Crimson, or Bright Red. Touch the canvas lightly, just the tip of the brush. One dot, then move. Scatter them through the foreground, clustering where they would naturally cluster, thinning where they wouldn't.
-
-Add stems with a thin liner brush loaded with Sap Green, pulling straight up from each dot. The stems don't need to be perfectly straight — wildflowers lean, they sway, they reach for different angles of light.
 
 The contrast of small bright dots against a dark green or brown ground is what makes them pop. You don't need many. Ten carefully placed flowers outperform fifty random ones.",
                     DateCreated = new DateTime(2026, 3, 22),
                     CreatedBy = "Bob Ross",
                     Tags = "nature,flowers,color",
-                    ImageFileName = ""
+                    ImageFileName = "",
+                    Category = nature
                 },
                 new()
                 {
@@ -156,15 +161,14 @@ The contrast of small bright dots against a dark green or brown ground is what m
 
 A clear sky is beautiful. A storm sky is memorable. The difference is in the dark values you're willing to commit to.
 
-Start with a dark base layer across the sky area — Midnight Black and Prussian Blue mixed. While this is wet, add Titanium White in thick clouds by dabbing and lifting with a crumpled cloth or a large bristle brush. The dark base bleeds into the white as you lift, creating the grey interior of a stormcloud. The edges that stay pure white are where the sun breaks through.
+Start with a dark base layer across the sky area — Midnight Black and Prussian Blue mixed. While this is wet, add Titanium White in thick clouds by dabbing and lifting with a crumpled cloth or a large bristle brush. The dark base bleeds into the white as you lift, creating the grey interior of a stormcloud.
 
-Mountains beneath storm clouds should be darker and more dramatic than in a clear-sky painting. The contrast between the illuminated peaks (which still catch some filtered light) and the dark cloud mass above is what makes the image feel weighted with weather.
-
-A strip of lighter sky at the horizon — Phthalo Blue lightened with white — suggests the storm is passing, or the sun is low and shining under the clouds. This one detail turns a forbidding scene into a hopeful one.",
+A strip of lighter sky at the horizon — Phthalo Blue lightened with white — suggests the storm is passing. This one detail turns a forbidding scene into a hopeful one.",
                     DateCreated = new DateTime(2026, 3, 15),
                     CreatedBy = "Bob Ross",
                     Tags = "mountains,clouds,drama",
-                    ImageFileName = ""
+                    ImageFileName = "",
+                    Category = mountains
                 },
                 new()
                 {
@@ -173,17 +177,16 @@ A strip of lighter sky at the horizon — Phthalo Blue lightened with white — 
                     ContentPreview = "The wet-on-wet oil technique is what makes Bob's skies magical.",
                     Content = @"The wet-on-wet oil technique is what makes Bob's skies magical.
 
-Wet-on-wet (also called alla prima) means painting into a still-wet base layer, so colors blend directly on the canvas rather than being mixed on the palette first. Bob used a liquid white base coat on every canvas before starting — this is the secret.
+Wet-on-wet means painting into a still-wet base layer, so colors blend directly on the canvas rather than being mixed on the palette first. Bob used a liquid white base coat on every canvas before starting — this is the secret.
 
-The liquid white coat keeps the entire surface workable for hours, which means every sky color you add blends seamlessly with what's already there. Blue into white gives you soft gradients. Yellow near the horizon melts into blue at the top. No hard edges unless you deliberately create them with a dry brush or palette knife.
+The liquid white coat keeps the entire surface workable for hours, which means every sky color you add blends seamlessly with what's already there. Blue into white gives you soft gradients. Yellow near the horizon melts into blue at the top.
 
-For smooth gradients, use a large, soft-bristle brush and work in long horizontal strokes. The brush picks up what's already on the canvas and blends it forward. You're not applying — you're moving.
-
-This is why Bob's skies look painted in one pass. They were. The wet base makes one pass possible. Without it, you'd be fighting the paint instead of dancing with it.",
+For smooth gradients, use a large, soft-bristle brush and work in long horizontal strokes. You're not applying — you're moving.",
                     DateCreated = new DateTime(2026, 3, 8),
                     CreatedBy = "Bob Ross",
                     Tags = "technique,sky,wet-on-wet",
-                    ImageFileName = ""
+                    ImageFileName = "",
+                    Category = technique
                 },
                 new()
                 {
@@ -194,20 +197,16 @@ This is why Bob's skies look painted in one pass. They were. The wet base makes 
 
 A cabin in a landscape is a promise: someone lives here, someone is warm, the world is small and manageable. That feeling — safety, simplicity, refuge — is what you're painting, not just the structure.
 
-The cabin itself is painted with a palette knife for the walls and a small fan brush for the roof. Keep it simple: two or three planes of color (light side, shadow side, dark roof). No windows with curtains and lamps — the mind fills that in. One vertical line of yellow-orange for a lit window is enough to complete the story.
-
-The surrounding trees and water should be rendered in more detail than the cabin — the cabin is the quiet center of a busy natural world, not the other way around. Mountains in the far distance, dark pines framing left and right, calm water with a simple reflection below.
+The cabin itself is painted with a palette knife for the walls and a small fan brush for the roof. Keep it simple: two or three planes of color. No elaborate windows — one vertical line of yellow-orange for a lit window is enough to complete the story.
 
 Place the cabin slightly off-center. Let the horizon be low. Give the sky room to breathe. A painting of a cabin by a lake should feel like a deep breath.",
                     DateCreated = new DateTime(2026, 3, 1),
                     CreatedBy = "Bob Ross",
                     Tags = "water,cabin,peace",
-                    ImageFileName = ""
+                    ImageFileName = "",
+                    Category = waterscapes
                 },
             };
-
-            // Assign categories based on tags
-            articles[0].Category = null; // featured, no category nav-prop needed for WASM
 
             await context.AddRangeAsync(articles);
             await context.SaveChangesAsync();

@@ -1,6 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-![](https://www.brandontillman.com/wp-content/uploads/2019/04/CleanArchitectureScreenShot-min.png "BrandonTillman.com CleanArchitecture")
+![](./src/CleanArchitecture.WASM/Preview.png)
 
 # The motivation behind it all
 

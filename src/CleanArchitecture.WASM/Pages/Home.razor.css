@@ -1,11 +1,42 @@
 /* ── Hero ── */
 .hero {
-    background: linear-gradient(160deg, #2d4a5a 0%, #3a6b45 45%, #7aad6a 100%);
-    padding: 56px 32px;
+    position: relative;
+    background-color: rgb(18, 36, 26);
+    min-height: 420px;
+    padding: 80px 32px;
     text-align: center;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: clamp(900px, 55vw, 1600px);
+    background-image:
+        linear-gradient(rgba(18, 36, 26, 0.45), rgba(18, 36, 26, 0.45)),
+        url('/bob_ross_boss.png');
+    background-repeat: no-repeat;
+    background-position: center, center 25%;
+    background-size: 100% 100%, 100% auto;
+    -webkit-mask-image: linear-gradient(to right,
+        transparent 0%,
+        black 18%,
+        black 82%,
+        transparent 100%);
+    mask-image: linear-gradient(to right,
+        transparent 0%,
+        black 18%,
+        black 82%,
+        transparent 100%);
 }
 
 .hero-inner {
+    position: relative;
+    z-index: 1;
     max-width: 600px;
     margin: 0 auto;
 }

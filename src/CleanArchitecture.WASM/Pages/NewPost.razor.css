@@ -1,4 +1,4 @@
-/* ─── Success Banner ─────────────────────────────────────────────────── */
+/* ─── Banners ────────────────────────────────────────────────────────── */
 .success-banner {
     display: flex;
     align-items: center;
@@ -27,6 +27,42 @@
     color: #1e3a2a;
 }
 
+.draft-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f0f4ff;
+    border: 1px solid #7a90c0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 24px;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    color: #3a4a7a;
+}
+
+.draft-banner .dismiss-btn {
+    color: #7a90c0;
+}
+
+.error-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fef2f2;
+    border: 1px solid #c0392b;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 24px;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    color: #7a1a1a;
+}
+
+.error-banner .dismiss-btn {
+    color: #c0392b;
+}
+
 /* ─── Layout ─────────────────────────────────────────────────────────── */
 .editor-layout {
     display: flex;
@@ -47,12 +83,39 @@
     flex-shrink: 0;
 }
 
+/* ─── Editor Header ──────────────────────────────────────────────────── */
+.editor-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.btn-new {
+    background: none;
+    border: 1.5px solid #d0dde8;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a6070;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+
+.btn-new:hover {
+    border-color: #3a6b45;
+    color: #3a6b45;
+}
+
 /* ─── Page Heading ───────────────────────────────────────────────────── */
 .page-heading {
     font-family: 'Playfair Display', serif;
     font-size: 28px;
     color: #1e3a2a;
-    margin: 0 0 24px 0;
+    margin: 0;
     font-weight: 700;
 }
 
@@ -341,6 +404,127 @@
 
 .tags-input:focus {
     border-color: #3a6b45;
+}
+
+/* ─── Drafts Panel ───────────────────────────────────────────────────── */
+.drafts-card {
+    margin-top: 16px;
+}
+
+.draft-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eef3f6;
+    gap: 8px;
+}
+
+.draft-item:last-child {
+    border-bottom: none;
+}
+
+.draft-item-active {
+    background: #f8faf8;
+    border-radius: 6px;
+    padding: 8px 6px;
+    margin: 0 -6px;
+}
+
+.draft-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.draft-title {
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    color: #1e3a2a;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+}
+
+.draft-date {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    color: #8aaabb;
+}
+
+.draft-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.btn-load-draft {
+    background: none;
+    border: 1px solid #d0dde8;
+    border-radius: 5px;
+    padding: 4px 10px;
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #5a7080;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+}
+
+.btn-load-draft:hover {
+    border-color: #3a6b45;
+    color: #3a6b45;
+}
+
+.btn-delete-draft {
+    background: none;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 6px;
+    font-size: 11px;
+    color: #b0bec5;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.15s, background 0.15s;
+}
+
+.btn-delete-draft:hover {
+    color: #c0392b;
+    background: #fef2f2;
+}
+
+/* ─── Field Validation ───────────────────────────────────────────────── */
+.field-error {
+    display: block;
+    margin-top: 4px;
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    color: #c0392b;
+}
+
+/* ─── Char Counter ───────────────────────────────────────────────────── */
+.char-count {
+    display: block;
+    text-align: right;
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    color: #8aaabb;
+    margin-top: 4px;
+}
+
+.char-count--warn {
+    color: #c0392b;
+}
+
+/* ─── Disabled Button State ──────────────────────────────────────────── */
+.btn-publish:disabled,
+.btn-draft:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 /* ─── Responsive ─────────────────────────────────────────────────────── */

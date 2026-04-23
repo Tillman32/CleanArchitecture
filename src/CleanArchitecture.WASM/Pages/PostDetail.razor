@@ -1,6 +1,7 @@
 @page "/posts/{Id:int}"
 @using CleanArchitecture.Core.Service
 @using CleanArchitecture.Core.Data.DTO
+@using System.Text.RegularExpressions
 @inject IArticleService ArticleService
 
 <PageTitle>@(post?.Title ?? "Post Not Found") — Bob Ross Blog</PageTitle>
@@ -45,10 +46,7 @@ else if (post != null)
 
         <!-- Post body -->
         <div class="post-body">
-            @foreach (var paragraph in GetParagraphs(post.Content))
-            {
-                <p>@paragraph</p>
-            }
+            @RenderMarkdown(post.Content)
         </div>
 
         <!-- Tags -->
@@ -80,12 +78,38 @@ else if (post != null)
         loaded = true;
     }
 
-    private string[] GetParagraphs(string content)
-        => string.IsNullOrWhiteSpace(content)
-            ? Array.Empty<string>()
-            : content.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+    private MarkupString RenderMarkdown(string? content)
+    {
+        if (string.IsNullOrWhiteSpace(content))
+            return new MarkupString("");
 
-    private string[] GetTags(string tags)
+        var sb = new System.Text.StringBuilder();
+        foreach (var rawLine in content.Split('\n'))
+        {
+            var line = rawLine.TrimEnd('\r');
+            if (line.StartsWith("### "))
+                sb.Append("<h3>").Append(Inline(line[4..])).Append("</h3>\n");
+            else if (line.StartsWith("## "))
+                sb.Append("<h2>").Append(Inline(line[3..])).Append("</h2>\n");
+            else if (line.StartsWith("> "))
+                sb.Append("<blockquote><p>").Append(Inline(line[2..])).Append("</p></blockquote>\n");
+            else if (!string.IsNullOrWhiteSpace(line))
+                sb.Append("<p>").Append(Inline(line)).Append("</p>\n");
+        }
+        return new MarkupString(sb.ToString());
+    }
+
+    private static string Inline(string text)
+    {
+        text = System.Net.WebUtility.HtmlEncode(text);
+        text = Regex.Replace(text, @"!\[([^\]]*)\]\(([^)]*)\)", "<img src=\"$2\" alt=\"$1\">");
+        text = Regex.Replace(text, @"\[([^\]]*)\]\(([^)]*)\)", "<a href=\"$2\">$1</a>");
+        text = Regex.Replace(text, @"\*\*([^*]+)\*\*", "<strong>$1</strong>");
+        text = Regex.Replace(text, @"\*([^*]+)\*", "<em>$1</em>");
+        return text;
+    }
+
+    private string[] GetTags(string? tags)
         => string.IsNullOrWhiteSpace(tags)
             ? Array.Empty<string>()
             : tags.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);

@@ -86,7 +86,7 @@
         allPosts = dtos?.Select(dto => new Post(
             dto.Id,
             dto.Category?.Title ?? "Other",
-            dto.Title,
+            dto.Title ?? "",
             dto.ContentPreview ?? "",
             dto.DateCreated.ToString("MMMM d, yyyy"),
             dto.Tags?.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries) ?? Array.Empty<string>()

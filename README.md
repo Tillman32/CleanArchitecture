@@ -2,7 +2,7 @@
 
 ![](./src/CleanArchitecture.WASM/Preview.png)
 
-![View Live](https://tillman32.github.io/CleanArchitecture/)
+[LIVE DEMO - WASM on GitHub Pages](https://tillman32.github.io/CleanArchitecture/)
 
 # The motivation behind it all
 

@@ -40,15 +40,13 @@ The code will be easier to modify in the future, because of a few reasons. Separ
 
 The code will inherently be more maintainable by following Clean Architecture patterns. Other developers will see the benefit of the clean separation, and follow suit.
 
-# Technologies Used
+# Primary Technologies Used
 
-- [.Net Core](https://dotnet.microsoft.com/)
-- [Razor Pages](https://www.learnrazorpages.com/)
+- [.Net](https://dotnet.microsoft.com/)
+- [Blazor WASM](https://www.learnblazor.com/)
 - [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)
 - [AutoMapper](https://automapper.org/)
 - [NLog](https://nlog-project.org/)
-- [Bootstrap](https://getbootstrap.com/)
-- [FontAwesome](https://fontawesome.com/)
 
 ### :star2: Give it a Star! 
 If you like or are using this project to learn or start your solution, please consider giving it a star. Thank you!

@@ -1,4 +1,3 @@
-using AutoMapper;
 using Blazored.LocalStorage;
 using CleanArchitecture.Core.Data;
 using CleanArchitecture.Core.Data.Entity;
@@ -29,7 +28,6 @@ builder.Services.AddScoped<IArticleCategoryService, ArticleCategoryService>();
 builder.Services.AddScoped<LocalStorageDbInitializer>();
 
 // AutoMapper
-builder.Services.AddSingleton<IMapper>(_ =>
-    new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>()).CreateMapper());
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
 
 await builder.Build().RunAsync();

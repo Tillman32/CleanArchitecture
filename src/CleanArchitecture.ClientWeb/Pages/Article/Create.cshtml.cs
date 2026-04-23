@@ -1,10 +1,13 @@
 ﻿using CleanArchitecture.Core.Data.DTO;
 using CleanArchitecture.Core.Service;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Linq;
 
@@ -14,6 +17,7 @@ namespace CleanArchitecture.ClientWeb.Pages.Articles
     {
         private readonly IArticleService _articleService;
         private readonly IArticleCategoryService _articleCategoryService;
+        private readonly IWebHostEnvironment _env;
 
         [BindProperty]
         public IFormFile ImageUpload { get; set; }
@@ -25,10 +29,12 @@ namespace CleanArchitecture.ClientWeb.Pages.Articles
 
         public CreateModel(
             IArticleService articleService,
-            IArticleCategoryService articleCategoryService)
+            IArticleCategoryService articleCategoryService,
+            IWebHostEnvironment env)
         {
             _articleService = articleService;
             _articleCategoryService = articleCategoryService;
+            _env = env;
         }
 
         public async Task OnGetAsync()
@@ -48,8 +54,13 @@ namespace CleanArchitecture.ClientWeb.Pages.Articles
 
             if (ImageUpload != null)
             {
-                Article.ImageFileName =
-                    await _articleService.UploadArticleImageAsync(ImageUpload);
+                var uploadsDir = Path.Combine(_env.WebRootPath, "uploads");
+                Directory.CreateDirectory(uploadsDir);
+                var ext = Path.GetExtension(ImageUpload.FileName);
+                var fileName = $"{Guid.NewGuid()}{ext}";
+                using var stream = new FileStream(Path.Combine(uploadsDir, fileName), FileMode.Create);
+                await ImageUpload.CopyToAsync(stream);
+                Article.ImageFileName = fileName;
             }
 
             await _articleService.CreateArticleAsync(Article);

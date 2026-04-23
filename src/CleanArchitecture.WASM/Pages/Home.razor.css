@@ -18,7 +18,7 @@
     width: clamp(900px, 55vw, 1600px);
     background-image:
         linear-gradient(rgba(18, 36, 26, 0.45), rgba(18, 36, 26, 0.45)),
-        url('/bob_ross_boss.png');
+        url('bob_ross_boss.png');
     background-repeat: no-repeat;
     background-position: center, center 25%;
     background-size: 100% 100%, 100% auto;

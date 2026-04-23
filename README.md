@@ -8,9 +8,7 @@ What is the point of all this? Well, besides showcasing Bob Ross... I thought it
 
 I also found it fitting, that "Uncle Bob" (Robert C. Martin) shares a similar name, and this project makes an attempt to align with his architecture [outlined here on his website.](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) 
 
-An example of the application running on AWS (Ubuntu) is hosted here: [https://cleanarchitecture.brandontillman.com](https://cleanarchitecture.brandontillman.com/)
-
-I also wrote a blog post to pair with it here: [https://www.brandontillman.com/clean-architecture-dot-net-core/](https://www.brandontillman.com/clean-architecture-dot-net-core/)
+I also wrote a blog post to pair with it here: [https://www.brandontillman.com/blog/clean-architecture-dotnet](https://www.brandontillman.com/blog/clean-architecture-dotnet)
 
 # Key Points:
 

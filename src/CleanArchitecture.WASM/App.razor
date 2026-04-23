@@ -1,0 +1,28 @@
+@inject LocalStorageDbInitializer DbInitializer
+@using CleanArchitecture.WASM.Infrastructure
+
+@if (!_ready)
+{
+    <div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;color:#666;">
+        Loading...
+    </div>
+}
+else
+{
+    <Router AppAssembly="@typeof(App).Assembly" NotFoundPage="typeof(Pages.NotFound)">
+        <Found Context="routeData">
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+    </Router>
+}
+
+@code {
+    private bool _ready;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await DbInitializer.EnsureSeededAsync();
+        _ready = true;
+    }
+}

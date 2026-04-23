@@ -1,0 +1,126 @@
+@page "/posts/{Id:int}"
+@using CleanArchitecture.Core.Service
+@using CleanArchitecture.Core.Data.DTO
+@using System.Text.RegularExpressions
+@inject IArticleService ArticleService
+
+<PageTitle>@(post?.Title ?? "Post Not Found") — Bob Ross Blog</PageTitle>
+
+@if (post == null && loaded)
+{
+    <div class="post-detail">
+        <p>Post not found. <a href="/posts">Back to posts</a></p>
+    </div>
+}
+else if (post != null)
+{
+    <div class="post-detail">
+
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+            <a href="/" class="breadcrumb-link">Home</a>
+            <span class="breadcrumb-sep">&rsaquo;</span>
+            <a href="/posts" class="breadcrumb-link">Posts</a>
+            <span class="breadcrumb-sep">&rsaquo;</span>
+            <span class="breadcrumb-current">@post.Title</span>
+        </nav>
+
+        <!-- Category badge -->
+        <div class="post-category">@(post.Category?.Title ?? "Other")</div>
+
+        <!-- Title -->
+        <h1 class="post-title">@post.Title</h1>
+
+        <!-- Meta row -->
+        <div class="post-meta">
+            <span class="author-avatar">🎨</span>
+            <span class="author-name">@post.CreatedBy</span>
+            <span class="meta-divider">&middot;</span>
+            <span class="meta-date">@post.DateCreated.ToString("MMMM d, yyyy")</span>
+        </div>
+
+        <!-- Hero image -->
+        <div class="hero-image">
+            <span class="hero-emoji">@GetEmoji(post.Category?.Title)</span>
+        </div>
+
+        <!-- Post body -->
+        <div class="post-body">
+            @RenderMarkdown(post.Content)
+        </div>
+
+        <!-- Tags -->
+        <div class="tags-row">
+            @foreach (var tag in GetTags(post.Tags))
+            {
+                <span class="tag">@tag</span>
+            }
+        </div>
+
+        <hr class="post-divider" />
+
+        <!-- Back link -->
+        <a href="/posts" class="back-link">&larr; Back to Posts</a>
+
+    </div>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    private ArticleDTO? post;
+    private bool loaded;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        loaded = false;
+        post = await ArticleService.GetArticleAsync(Id);
+        loaded = true;
+    }
+
+    private MarkupString RenderMarkdown(string? content)
+    {
+        if (string.IsNullOrWhiteSpace(content))
+            return new MarkupString("");
+
+        var sb = new System.Text.StringBuilder();
+        foreach (var rawLine in content.Split('\n'))
+        {
+            var line = rawLine.TrimEnd('\r');
+            if (line.StartsWith("### "))
+                sb.Append("<h3>").Append(Inline(line[4..])).Append("</h3>\n");
+            else if (line.StartsWith("## "))
+                sb.Append("<h2>").Append(Inline(line[3..])).Append("</h2>\n");
+            else if (line.StartsWith("> "))
+                sb.Append("<blockquote><p>").Append(Inline(line[2..])).Append("</p></blockquote>\n");
+            else if (!string.IsNullOrWhiteSpace(line))
+                sb.Append("<p>").Append(Inline(line)).Append("</p>\n");
+        }
+        return new MarkupString(sb.ToString());
+    }
+
+    private static string Inline(string text)
+    {
+        text = System.Net.WebUtility.HtmlEncode(text);
+        text = Regex.Replace(text, @"!\[([^\]]*)\]\(([^)]*)\)", "<img src=\"$2\" alt=\"$1\">");
+        text = Regex.Replace(text, @"\[([^\]]*)\]\(([^)]*)\)", "<a href=\"$2\">$1</a>");
+        text = Regex.Replace(text, @"\*\*([^*]+)\*\*", "<strong>$1</strong>");
+        text = Regex.Replace(text, @"\*([^*]+)\*", "<em>$1</em>");
+        return text;
+    }
+
+    private string[] GetTags(string? tags)
+        => string.IsNullOrWhiteSpace(tags)
+            ? Array.Empty<string>()
+            : tags.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+    private string GetEmoji(string? category) => category switch
+    {
+        "Mountains"   => "🏔️",
+        "Technique"   => "🌲",
+        "Waterscapes" => "🌊",
+        "Seasons"     => "🍂",
+        "Nature"      => "🌸",
+        _             => "🎨"
+    };
+}

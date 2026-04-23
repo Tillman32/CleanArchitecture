@@ -1,0 +1,132 @@
+@page "/posts"
+@using System.Linq
+@using CleanArchitecture.Core.Service
+@inject IArticleService ArticleService
+
+<PageTitle>All Posts — Bob Ross Blog</PageTitle>
+
+<div class="posts-page">
+
+    <div class="posts-header">
+        <h1 class="page-title">All Posts</h1>
+        <div class="category-filter">
+            @foreach (var cat in categories)
+            {
+                <button class="pill @(activeCategory == cat ? "pill-active" : "")"
+                        @onclick="() => SetCategory(cat)">
+                    @cat
+                </button>
+            }
+        </div>
+    </div>
+
+    <div class="results-count">
+        Showing @PagedPosts.Count of @FilteredPosts.Count posts
+    </div>
+
+    <div class="post-list">
+        @foreach (var post in PagedPosts)
+        {
+            <div class="post-row">
+                <div class="post-image @GetImageClass(post.Category)">
+                    @GetEmoji(post.Category)
+                </div>
+                <div class="post-body">
+                    <div class="post-category">@post.Category</div>
+                    <h2 class="post-title">@post.Title</h2>
+                    <p class="post-excerpt">@post.Excerpt</p>
+                    <div class="post-tags">
+                        @foreach (var tag in post.Tags)
+                        {
+                            <span class="tag">@tag</span>
+                        }
+                    </div>
+                </div>
+                <div class="post-aside">
+                    <span class="post-date">@post.Date</span>
+                    <a href="posts/@post.Id" class="btn-read">Read Post &rarr;</a>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (TotalPages > 1)
+    {
+        <div class="pagination">
+            <button class="page-btn @(currentPage == 1 ? "page-btn-disabled" : "")"
+                    disabled="@(currentPage == 1)"
+                    @onclick="() => { if (currentPage > 1) currentPage--; }">
+                Previous
+            </button>
+            <span class="page-indicator">Page @currentPage of @TotalPages</span>
+            <button class="page-btn @(currentPage == TotalPages ? "page-btn-disabled" : "")"
+                    disabled="@(currentPage == TotalPages)"
+                    @onclick="() => { if (currentPage < TotalPages) currentPage++; }">
+                Next
+            </button>
+        </div>
+    }
+
+</div>
+
+@code {
+    private record Post(int Id, string Category, string Title, string Excerpt, string Date, string[] Tags);
+
+    private List<string> categories = new() { "All", "Mountains", "Waterscapes", "Seasons", "Technique", "Nature", "Other" };
+
+    private List<Post> allPosts = new();
+
+    private string activeCategory = "All";
+    private int currentPage = 1;
+    private int pageSize = 4;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var dtos = await ArticleService.ListAllArticlesAsync();
+        allPosts = dtos?.Select(dto => new Post(
+            dto.Id,
+            dto.Category?.Title ?? "Other",
+            dto.Title ?? "",
+            dto.ContentPreview ?? "",
+            dto.DateCreated.ToString("MMMM d, yyyy"),
+            dto.Tags?.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries) ?? Array.Empty<string>()
+        )).ToList() ?? new();
+    }
+
+    private List<Post> FilteredPosts => activeCategory == "All"
+        ? allPosts
+        : allPosts.Where(p => p.Category == activeCategory).ToList();
+
+    private List<Post> PagedPosts => FilteredPosts
+        .Skip((currentPage - 1) * pageSize)
+        .Take(pageSize)
+        .ToList();
+
+    private int TotalPages => (int)Math.Ceiling(FilteredPosts.Count / (double)pageSize);
+
+    private void SetCategory(string cat)
+    {
+        activeCategory = cat;
+        currentPage = 1;
+    }
+
+    private string GetImageClass(string category) => category switch
+    {
+        "Mountains"   => "img-mountains",
+        "Technique"   => "img-trees",
+        "Waterscapes" => "img-water",
+        "Seasons"     => "img-seasons",
+        "Nature"      => "img-nature",
+        _             => "img-mountains"
+    };
+
+    private string GetEmoji(string category) => category switch
+    {
+        "Mountains"   => "🏔️",
+        "Technique"   => "🌲",
+        "Waterscapes" => "🌊",
+        "Seasons"     => "🍂",
+        "Nature"      => "🌸",
+        _             => "🎨"
+    };
+}

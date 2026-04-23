@@ -6,12 +6,15 @@ namespace CleanArchitecture.Core.Data.Entity
     {
         public int Id { get; set; }
         public DateTime DateCreated { get; set; }
-        public string Title { get; set; }
-        public string ContentPreview { get; set; }
-        public string Content { get; set; }
-        public string CreatedBy { get; set; }
-        public string ImageFileName { get; set; }
+        public string Title { get; set; } = "";
+        public string? ContentPreview { get; set; }
+        public string? Content { get; set; }
+        public string? CreatedBy { get; set; }
+        public string? ImageFileName { get; set; }
+        public string? Tags { get; set; }
+        public bool IsDraft { get; set; }
 
-        public virtual ArticleCategoryEntity Category { get; set; }
+        public int CategoryId { get; set; }
+        public virtual ArticleCategoryEntity? Category { get; set; }
     }
 }

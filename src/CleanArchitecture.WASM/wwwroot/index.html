@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CleanArchitecture.WASM</title>
+    <base href="/" />
+    <link rel="preload" id="webassembly" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="CleanArchitecture.WASM.styles.css" rel="stylesheet" />
+    <script type="importmap"></script>
+</head>
+
+<body>
+    <div id="app">
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="." class="reload">Reload</a>
+        <span class="dismiss">🗙</span>
+    </div>
+    <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+    <script>
+        window.editorInsertFormat = function (el, format) {
+            const start = el.selectionStart;
+            const end = el.selectionEnd;
+            const val = el.value;
+            const sel = val.substring(start, end);
+            const before = val.substring(0, start);
+            const after = val.substring(end);
+            const lineStart = before.lastIndexOf('\n') + 1;
+            let newVal, newStart, newEnd;
+
+            switch (format) {
+                case 'bold':
+                    newVal = before + '**' + (sel || 'bold') + '**' + after;
+                    newStart = start + 2; newEnd = sel ? end + 2 : start + 6;
+                    break;
+                case 'italic':
+                    newVal = before + '*' + (sel || 'italic') + '*' + after;
+                    newStart = start + 1; newEnd = sel ? end + 1 : start + 7;
+                    break;
+                case 'h2': {
+                    const pfx = val.substring(lineStart, start);
+                    if (pfx.startsWith('## ')) {
+                        newVal = val.substring(0, lineStart) + pfx.substring(3) + val.substring(start);
+                        newStart = newEnd = Math.max(lineStart, start - 3);
+                    } else {
+                        newVal = val.substring(0, lineStart) + '## ' + val.substring(lineStart);
+                        newStart = newEnd = start + 3;
+                    }
+                    break;
+                }
+                case 'h3': {
+                    const pfx = val.substring(lineStart, start);
+                    if (pfx.startsWith('### ')) {
+                        newVal = val.substring(0, lineStart) + pfx.substring(4) + val.substring(start);
+                        newStart = newEnd = Math.max(lineStart, start - 4);
+                    } else {
+                        newVal = val.substring(0, lineStart) + '### ' + val.substring(lineStart);
+                        newStart = newEnd = start + 4;
+                    }
+                    break;
+                }
+                case 'quote': {
+                    const pfx = val.substring(lineStart, start);
+                    if (pfx.startsWith('> ')) {
+                        newVal = val.substring(0, lineStart) + pfx.substring(2) + val.substring(start);
+                        newStart = newEnd = Math.max(lineStart, start - 2);
+                    } else {
+                        newVal = val.substring(0, lineStart) + '> ' + val.substring(lineStart);
+                        newStart = newEnd = start + 2;
+                    }
+                    break;
+                }
+                case 'link':
+                    newVal = sel
+                        ? before + '[' + sel + '](url)' + after
+                        : before + '[link text](url)' + after;
+                    newStart = sel ? end + 3 : start + 1;
+                    newEnd = sel ? end + 6 : start + 10;
+                    break;
+                case 'image':
+                    newVal = before + '![' + (sel || 'alt text') + '](url)' + after;
+                    newStart = start + 2; newEnd = start + 2 + (sel ? sel.length : 8);
+                    break;
+                default:
+                    return val;
+            }
+
+            el.value = newVal;
+            el.setSelectionRange(newStart, newEnd);
+            el.focus();
+            return newVal;
+        };
+    </script>
+</body>
+
+</html>

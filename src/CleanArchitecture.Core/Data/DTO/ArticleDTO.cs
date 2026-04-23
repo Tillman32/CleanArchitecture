@@ -8,16 +8,18 @@ namespace CleanArchitecture.Core.Data.DTO
         public int Id { get; set; }
 
         [Required, MaxLength(125)]
-        public string Title { get; set; }
-        public string ContentPreview { get; set; }
+        public string? Title { get; set; }
+        public string? ContentPreview { get; set; }
 
         [Required, MaxLength(1000)]
-        public string Content { get; set; }
+        public string? Content { get; set; }
         public DateTime DateCreated { get; set; }
-        public string CreatedBy { get; set; }
-        public string ImageFileName { get; set; }
+        public string? CreatedBy { get; set; }
+        public string? ImageFileName { get; set; }
+        public string? Tags { get; set; }
+        public bool IsDraft { get; set; }
 
         public int CategoryId { get; set; }
-        public ArticleCategoryDTO Category { get; set; }
+        public ArticleCategoryDTO? Category { get; set; }
     }
 }

@@ -1,130 +1,90 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using AutoMapper;
 using CleanArchitecture.Core.Data;
 using CleanArchitecture.Core.Data.DTO;
 using CleanArchitecture.Core.Data.Entity;
 using CleanArchitecture.Core.Extensions;
-using System.IO;
-using AutoMapper;
-using CleanArchitecture.Core.Logging;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CleanArchitecture.Core.Service
 {
     public class ArticleService : IArticleService
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly IGenericRepository<ArticleEntity> _repo;
+        private readonly IGenericRepository<ArticleEntity> _articles;
+        private readonly IGenericRepository<ArticleCategoryEntity> _categories;
         private readonly IMapper _mapper;
-        private readonly ILogger<ArticleService> _logger;
 
         public ArticleService(
-            IHostingEnvironment hostingEnvironment,
-            IGenericRepository<ArticleEntity> repo,
-            IMapper mapper,
-            ILogger<ArticleService> logger)
+            IGenericRepository<ArticleEntity> articles,
+            IGenericRepository<ArticleCategoryEntity> categories,
+            IMapper mapper)
         {
-            _hostingEnvironment = hostingEnvironment;
-            _repo = repo;
+            _articles = articles;
+            _categories = categories;
             _mapper = mapper;
-            _logger = logger;
         }
 
+        private async Task<List<ArticleCategoryEntity>> GetCategoriesAsync() =>
+            (await _categories.GetAll()).ToList();
 
         public async Task<IEnumerable<ArticleDTO>> ListAllArticlesAsync()
         {
-            try
-            {
-                var articles = await
-                    _repo.GetPaginated(1, 10);
-
-                _logger.LogInfo("Retrieved all Article Entities from ArticleService.");
-
-                var articlesDTO =
-                    articles.Select(e => _mapper.Map<ArticleEntity, ArticleDTO>(e));
-
-                return articlesDTO;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Unable to ListAllArticles from ArticleService.");
-                return null;
-            }
+            var cats = await GetCategoriesAsync();
+            var articles = (await _articles.GetAll())
+                .Where(a => !a.IsDraft)
+                .OrderByDescending(a => a.DateCreated)
+                .ToList();
+            foreach (var a in articles)
+                a.Category = cats.FirstOrDefault(c => c.Id == a.CategoryId);
+            return articles.Select(e => _mapper.Map<ArticleEntity, ArticleDTO>(e));
         }
 
-        public async Task<ArticleDTO> GetArticleAsync(int id)
+        public async Task<IEnumerable<ArticleDTO>> ListDraftsAsync()
         {
-            try
-            {
-                var article =
-                    await _repo.GetById(id);
+            var articles = (await _articles.GetAll())
+                .Where(a => a.IsDraft)
+                .OrderByDescending(a => a.DateCreated)
+                .ToList();
+            return articles.Select(e => _mapper.Map<ArticleEntity, ArticleDTO>(e));
+        }
 
-                var articleDTO = 
-                    _mapper.Map<ArticleEntity, ArticleDTO>(article);
-
-                _logger.LogInfo($"Retrieved single Article from ArticleService. ID: {article.Id}");
-
-                return articleDTO;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Unable to retrieve Article from ArticleService. ID: {id}");
-
-                return null;
-            }
+        public async Task<ArticleDTO?> GetArticleAsync(int id)
+        {
+            var article = await _articles.GetById(id);
+            if (article == null) return null;
+            var cats = await GetCategoriesAsync();
+            article.Category = cats.FirstOrDefault(c => c.Id == article.CategoryId);
+            return _mapper.Map<ArticleEntity, ArticleDTO>(article);
         }
 
         public async Task CreateArticleAsync(ArticleDTO articleDTO)
         {
-
-            try
-            {
-                var articleEntity = 
-                    _mapper.Map<ArticleDTO, ArticleEntity>(articleDTO);
-
-                articleEntity.ContentPreview = articleEntity.Content.Length > 500 ? $"{articleEntity.Content.Truncate(500)}..." : $"{articleEntity.Content}";
-                articleEntity.DateCreated = DateTime.Now.Date;
-                articleEntity.CreatedBy = "BrandonTillman.com";
-
-                await _repo.Create(articleEntity);
-
-                _logger.LogInfo($"Created new Article in ArticleService. ID: {articleEntity.Id}");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Unable to create new Article in ArticleService.");
-            }
+            var entity = _mapper.Map<ArticleDTO, ArticleEntity>(articleDTO);
+            entity.ContentPreview = entity.Content?.Length > 200
+                ? entity.Content!.Truncate(200) + "..."
+                : entity.Content ?? "";
+            entity.DateCreated = DateTime.UtcNow;
+            entity.CreatedBy = "Bob Ross";
+            entity.Category = null;
+            await _articles.Create(entity);
+            articleDTO.Id = entity.Id;
         }
 
-        public async Task<string> UploadArticleImageAsync(IFormFile imageFile)
+        public async Task UpdateArticleAsync(ArticleDTO articleDTO)
         {
-            var fileName = GetUniqueFileName(imageFile.FileName);
-            var uploadsDir = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
-            var filePath = Path.Combine(uploadsDir, fileName);
-
-            try
-            {
-                await imageFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
-
-                _logger.LogInfo($"Successfully uploaded new ArticleImage in ArticleService");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Unable to upload new ArticleImage in ArticleService");
-            }
-
-            return fileName;
+            var entity = _mapper.Map<ArticleDTO, ArticleEntity>(articleDTO);
+            entity.ContentPreview = entity.Content?.Length > 200
+                ? entity.Content!.Truncate(200) + "..."
+                : entity.Content ?? "";
+            if (!entity.IsDraft)
+                entity.DateCreated = DateTime.UtcNow;
+            entity.Category = null;
+            await _articles.Update(entity.Id, entity);
         }
 
-        private string GetUniqueFileName(string fileName)
-        {
-            fileName = Path.GetFileName(fileName);
-            return Path.GetFileNameWithoutExtension(fileName)
-                   + "_" + Guid.NewGuid().ToString().Substring(0, 4)
-                   + Path.GetExtension(fileName);
-        }
+        public async Task DeleteArticleAsync(int id) =>
+            await _articles.Delete(id);
     }
 }
